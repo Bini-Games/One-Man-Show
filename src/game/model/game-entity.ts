@@ -12,23 +12,27 @@ export class GameEntity extends Entity {
 
   public setPosition(x: number, y: number): void {
     this.position.set(x, y);
-    this.body.position = Matter.Vector.create(x, y);
+    Matter.Body.setPosition(this.body, Matter.Vector.create(x, y));
   }
 
   public addToPhysicsWorld(world: Matter.World): void {
     Matter.World.addBody(world, this.body);
   }
 
+  public reset(): void {}
+
   public init(): void {
     this.initBody();
   }
 
   protected initBody(): void {
-    this.body = Matter.Bodies.circle(0, 0, this.getRadius(), {
+    const body = Matter.Bodies.circle(0, 0, this.getRadius(), {
       mass: this.getMass(),
       isStatic: this.isStatic(),
       restitution: this.getRestitution(),
     });
+    this.body = body;
+    Matter.Body.setVelocity(body, Matter.Vector.create(0, 0));
   }
 
   public getRadius(): number {

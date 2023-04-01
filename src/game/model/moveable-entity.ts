@@ -17,4 +17,9 @@ export class MoveableEntity extends GameEntity {
   public resetVelocity(): void {
     this.setVelocity(0, 0);
   }
+
+  public reset(): void {
+    super.reset();
+    this.resetVelocity();
+  }
 }

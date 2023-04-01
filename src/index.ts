@@ -4,6 +4,7 @@ import { Game } from "./core/facade/game";
 import { Logger } from "./core/facade/logger";
 import { World } from "./game/model/world";
 import { Timer } from "eventemitter3-timer";
+import { WorldView } from "./game/view/world-view";
 
 const canvas = document.createElement("canvas");
 canvas.id = "game";
@@ -18,16 +19,23 @@ const app = new Application({
 });
 
 Game.registerService(Logger.key, new Logger());
-Game.registerService(World.key, new World());
+
+const world = new World();
+Game.registerService(World.key, world);
+
+const worldView = new WorldView(world);
+Game.registerService(WorldView.key, worldView);
 
 window.onload = load;
 
 function load() {
   app.ticker.add(tick);
 
-  const world = Game.getService<World>(World.key);
   world.init();
   world.reset();
+
+  worldView.init();
+  app.stage.addChild(worldView.getContainer());
 
   tick();
 }
@@ -43,12 +51,13 @@ function tick() {
   accumulated += frameTime;
 
   const dt = World.timeStep;
-  const world = Game.getService<World>(World.key);
 
   while (accumulated >= dt) {
     world.fixedUpdate();
     accumulated -= dt;
   }
+
+  worldView.update();
 
   app.renderer.render(app.stage);
 }

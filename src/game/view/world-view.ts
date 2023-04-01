@@ -1,0 +1,64 @@
+import { Container } from "pixi.js";
+import { ChildView } from "./child-view";
+import { ParentView } from "./parent-view";
+import { TargetView } from "./target-view";
+import { AbstractEntityView } from "./entity-view";
+import { AbstractService } from "../../core/services/abstract-service";
+import { World } from "../model/world";
+
+export class WorldView extends AbstractService {
+  public static readonly key: string = "WorldView";
+
+  protected container: Container;
+
+  protected world: World;
+
+  protected childView: ChildView;
+  protected parentView: ParentView;
+  protected targetView: TargetView;
+
+  constructor(world: World) {
+    super(WorldView.key);
+
+    this.world = world;
+  }
+
+  public getContainer(): Container {
+    return this.container;
+  }
+
+  public init(): void {
+    this.initContainer();
+    this.initChildView();
+    this.initParentView();
+    this.initTargetView();
+  }
+
+  public update(): void {
+    this.childView.update();
+    this.parentView.update();
+    this.targetView.update();
+  }
+
+  protected initContainer(): void {
+    this.container = new Container();
+  }
+
+  protected initChildView(): void {
+    this.childView = this.setupGameObjectView(new ChildView(this.world.getChild()));
+  }
+
+  protected initParentView(): void {
+    this.parentView = this.setupGameObjectView(new ParentView(this.world.getParent()));
+  }
+
+  protected initTargetView(): void {
+    this.targetView = this.setupGameObjectView(new TargetView(this.world.getTarget()));
+  }
+
+  protected setupGameObjectView<ViewType extends AbstractEntityView>(view: ViewType): ViewType {
+    view.init();
+    view.addTo(this.container);
+    return view;
+  }
+}

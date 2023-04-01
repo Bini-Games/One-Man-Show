@@ -23,16 +23,29 @@ export class World extends AbstractService {
     super(World.key);
   }
 
+  public getChild(): Child {
+    return this.child;
+  }
+
+  public getParent(): Parent {
+    return this.parent;
+  }
+
+  public getTarget(): Target {
+    return this.target;
+  }
+
   public reset(): void {
     const child = this.child;
+    child.reset();
     child.setPosition(Math.random(), Math.random());
-    child.resetVelocity();
 
     const parent = this.parent;
+    parent.reset();
     parent.setPosition(Math.random(), Math.random());
-    parent.resetVelocity()
 
     const target = this.target;
+    target.reset();
     target.setPosition(Math.random(), Math.random());
   }
 
