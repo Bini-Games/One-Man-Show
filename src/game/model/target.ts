@@ -1,6 +1,7 @@
-import { Vector2 } from "../../core/math/vector2";
+import { GameEntity } from "./game-entity";
 
-export class Target {
-  public radius: number = 0.05;
-  public position: Vector2 = new Vector2();
+export class Target extends GameEntity {
+  protected getRadius(): number {
+    return 0.05;
+  }
 }

@@ -21,18 +21,15 @@ export class World {
 
   public reset(): void {
     const child = this.child;
-    child.position.set(Math.random(), Math.random());
-    child.velocity.set(
-      Math.random() * 0.05 - 0.025,
-      Math.random() * 0.05 - 0.025
-    );
+    child.setPosition(Math.random(), Math.random());
+    child.resetVelocity();
 
     const parent = this.parent;
-    parent.position.set(Math.random(), Math.random());
-    parent.velocity.set(0);
+    parent.setPosition(Math.random(), Math.random());
+    parent.resetVelocity()
 
     const target = this.target;
-    target.position.set(Math.random(), Math.random());
+    target.setPosition(Math.random(), Math.random());
   }
 
   public getState(): number[] {
@@ -40,14 +37,24 @@ export class World {
     const target = this.target;
     const parent = this.parent;
 
-    const childToTarget = target.position.clone().sub(child.position);
-    const childToParent = parent.position.clone().sub(child.position);
+    const childPosition = child.getPosition();
+    const childVelocity = child.getVelocity();
+
+    const childToTarget = target
+      .getPosition()
+      .clone()
+      .sub(childPosition);
+
+    const childToParent = parent
+      .getPosition()
+      .clone()
+      .sub(childPosition);
 
     return [
-      child.position.x - 0.5,
-      child.position.y - 0.5,
-      child.velocity.x * 10,
-      child.velocity.y * 10,
+      childPosition.x - 0.5,
+      childPosition.y - 0.5,
+      childVelocity.x * 10,
+      childVelocity.y * 10,
       childToTarget.x,
       childToTarget.y,
       childToParent.x,
@@ -63,21 +70,25 @@ export class World {
     const target = this.target;
     const parent = this.parent;
 
-    const childToTargetDistance = target.position
+    const childPosition = child.getPosition();
+
+    const childToTargetDistance = target
+      .getPosition()
       .clone()
-      .sub(child.position)
+      .sub(childPosition)
       .getLength();
 
-    const childToParentDistance = parent.position
+    const childToParentDistance = parent
+      .getPosition()
       .clone()
-      .sub(child.position)
+      .sub(childPosition)
       .getLength();
 
     // it's better to be as close to the target as it's possible
     let reward = -childToTargetDistance;
 
     // but if we're too close to parent - that's bad
-    const affectRadius = parent.affectRadius;
+    const affectRadius = parent.getAffectRadius();
     if (childToParentDistance < affectRadius) {
       const childToParentDistanceMultiplier = 2;
       const childToParentDistanceCoefficient =

@@ -1,20 +1,21 @@
 import * as assert from "typed-assert";
 import { IComponent } from "./component.interface";
+import { Component } from "./component";
 import { ComponentCallback, IEntity } from "./entity.interface";
 import { IDestroyable } from "../abstractions/destroyable.interface";
 import { MemoryUtils } from "../utils/memory-utils";
 
-export class Entity<Component extends IComponent>
-  implements IEntity<Component>, IDestroyable
+export class Entity<ComponentType extends IComponent = Component>
+  implements IEntity<ComponentType>, IDestroyable
 {
-  protected components: Component[] = [];
+  protected components: ComponentType[] = [];
 
-  public addComponent(component: Component): void {
+  public addComponent(component: ComponentType): void {
     assert.isNotVoid(component);
     this.components.push(component);
   }
 
-  public removeComponent(component: Component): void {
+  public removeComponent(component: ComponentType): void {
     assert.isNotVoid(component);
 
     const components = this.components;
@@ -28,7 +29,7 @@ export class Entity<Component extends IComponent>
     }
   }
 
-  public getComponent(type: string): Component | null {
+  public getComponent(type: string): ComponentType | null {
     assert.isString(type);
 
     const components = this.components;
@@ -44,7 +45,7 @@ export class Entity<Component extends IComponent>
   }
 
   public forEachComponent(
-    callback: ComponentCallback<Component>,
+    callback: ComponentCallback<ComponentType>,
     ctx?: any
   ): void {
     assert.assert(typeof callback === "function");
@@ -57,7 +58,7 @@ export class Entity<Component extends IComponent>
     }
   }
 
-  public hasComponent(component: Component): boolean {
+  public hasComponent(component: ComponentType): boolean {
     assert.isNotVoid(component);
     return this.components.indexOf(component) !== -1;
   }

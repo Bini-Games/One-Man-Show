@@ -1,7 +1,11 @@
-import { Vector2 } from "../../core/math/vector2";
+import { MoveableEntity } from "./moveable-entity";
 
-export class Parent {
-  public affectRadius: number = 0.25;
-  public position: Vector2 = new Vector2();
-  public velocity: Vector2 = new Vector2();
+export class Parent extends MoveableEntity {
+  public getAffectRadius(): number {
+    return 0.25;
+  }
+
+  protected getRadius(): number {
+    return 0.05;
+  }
 }
