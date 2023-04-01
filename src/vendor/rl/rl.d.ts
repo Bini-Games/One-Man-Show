@@ -5,6 +5,7 @@ declare namespace RL {
   }
 
   interface IOptions {
+    update?: 'qlearn' | 'sarsa';
     gamma?: number;
     epsilon?: number;
     alpha?: number;
