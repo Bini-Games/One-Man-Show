@@ -7,6 +7,7 @@ import { GameEntity } from "./game-entity";
 import { AbstractService } from "../../core/services/abstract-service";
 import { GameConfig } from "../data/game-config";
 import { Vector2, Vector2Pool } from "../../core/math/vector2";
+import { Map } from "./map";
 
 export class World extends AbstractService {
   public static readonly key: string = "World";
@@ -17,6 +18,7 @@ export class World extends AbstractService {
 
   protected physicsEngine: Matter.Engine = null;
   protected physicsWorld: Matter.World = null;
+  protected map: Map = null;
   protected child: Child = null;
   protected parent: Parent = null;
   protected target: Target = null;
@@ -42,6 +44,10 @@ export class World extends AbstractService {
 
   public getTarget(): Target {
     return this.target;
+  }
+
+  public getMap(): Map {
+    return this.map;
   }
 
   public reset(): void {
@@ -161,6 +167,7 @@ export class World extends AbstractService {
 
   public init(): void {
     this.initPhysics();
+    this.initMap();
     this.initChild();
     this.initParent();
     this.initTarget();
@@ -174,6 +181,10 @@ export class World extends AbstractService {
     });
     this.physicsEngine = engine;
     this.physicsWorld = engine.world;
+  }
+
+  protected initMap(): void {
+    this.map = new Map(this, this.physicsWorld);
   }
 
   protected initChild(): void {
