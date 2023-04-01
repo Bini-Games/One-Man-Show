@@ -4,7 +4,7 @@ import { World } from "../../model/world";
 
 export class AgentController {
   protected agent: RL.DQNAgent = null;
-  protected world: World;
+  protected world: World = null;
 
   public setWorld(world: World): void {
     this.world = world;
