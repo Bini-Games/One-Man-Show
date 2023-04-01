@@ -120,14 +120,15 @@ export class World extends AbstractService {
       .clone()
       .sub(childPosition);
 
-    const childToParentDistance = childToParent.getLength();
-    const childToTargetDistance = childToTarget.getLength();
+    const worldSizeInv = 1 / GameConfig.WorldSize;
+    const childToParentDistance = childToParent.getLength() * worldSizeInv;
+    const childToTargetDistance = childToTarget.getLength() * worldSizeInv;
 
     // it's better to be as close to the target as it's possible
     let reward = -childToTargetDistance;
 
     // but if we're too close to parent - that's bad
-    const affectRadius = parent.getAffectRadius();
+    const affectRadius = parent.getAffectRadius() * worldSizeInv;
     if (childToParentDistance < affectRadius) {
       const childToParentDistanceMultiplier = 2;
       const childToParentDistanceCoefficient =
