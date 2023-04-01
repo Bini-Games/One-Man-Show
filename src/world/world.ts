@@ -12,6 +12,7 @@ export class World {
 
   constructor() {
     this.init();
+    this.reset();
   }
 
   public reset(): void {
