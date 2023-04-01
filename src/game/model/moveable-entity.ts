@@ -11,7 +11,7 @@ export class MoveableEntity extends GameEntity {
 
   public setVelocity(x: number, y: number): void {
     this.velocity.set(x, y);
-    Matter.Body.setVelocity(this.body, Matter.Vector.create(0, 0));
+    Matter.Body.setVelocity(this.body, Matter.Vector.create(x, y));
   }
 
   public resetVelocity(): void {
