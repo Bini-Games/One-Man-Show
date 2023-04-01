@@ -1,6 +1,6 @@
 import * as Matter from "matter-js";
 import { Entity } from "../../core/components/entity";
-import { Vector2 } from "../../core/math/vector2";
+import { Vector2, Vector2Pool } from "../../core/math/vector2";
 import { GameConfig } from "../data/game-config";
 
 export class GameEntity extends Entity {
@@ -50,5 +50,13 @@ export class GameEntity extends Entity {
 
   protected getRestitution(): number {
     return 0;
+  }
+
+  public destroy(): void {
+    super.destroy();
+
+    Vector2Pool.release(this.position);
+    this.position = null;
+    this.body = null;
   }
 }

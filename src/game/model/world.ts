@@ -6,6 +6,7 @@ import { Target } from "./target";
 import { GameEntity } from "./game-entity";
 import { AbstractService } from "../../core/services/abstract-service";
 import { GameConfig } from "../data/game-config";
+import { Vector2, Vector2Pool } from "../../core/math/vector2";
 
 export class World extends AbstractService {
   public static readonly key: string = "World";
@@ -19,6 +20,13 @@ export class World extends AbstractService {
   protected child: Child;
   protected parent: Parent;
   protected target: Target;
+  protected actionVelocities: Record<ActionType, Vector2> = {
+    [ActionType.Left]: new Vector2(-1, 0),
+    [ActionType.Right]: new Vector2(1, 0),
+    [ActionType.Up]: new Vector2(0, -1),
+    [ActionType.Down]: new Vector2(0, 1),
+    [ActionType.Stand]: new Vector2(0, 0),
+  };
 
   constructor() {
     super(World.key);
@@ -72,7 +80,7 @@ export class World extends AbstractService {
       .clone()
       .sub(childPosition);
 
-    return [
+    const result = [
       childPosition.x * worldSizeInv - 0.5,
       childPosition.y * worldSizeInv - 0.5,
       childVelocity.x * worldSizeInv * 10,
@@ -82,9 +90,17 @@ export class World extends AbstractService {
       childToParent.x * worldSizeInv,
       childToParent.y * worldSizeInv,
     ];
+
+    Vector2Pool.release(childToTarget);
+    Vector2Pool.release(childToParent);
+
+    return result;
   }
 
   public doAction(action: ActionType): void {
+    const velocity = this.actionVelocities[action];
+    const speed = GameConfig.ChildSpeed;
+    this.child.setVelocity(velocity.x * speed, velocity.y * speed);
   }
 
   public getReward(): number {
@@ -94,17 +110,18 @@ export class World extends AbstractService {
 
     const childPosition = child.getPosition();
 
-    const childToTargetDistance = target
+    const childToTarget = target
       .getPosition()
       .clone()
-      .sub(childPosition)
-      .getLength();
+      .sub(childPosition);
 
-    const childToParentDistance = parent
+    const childToParent = parent
       .getPosition()
       .clone()
-      .sub(childPosition)
-      .getLength();
+      .sub(childPosition);
+
+    const childToParentDistance = childToParent.getLength();
+    const childToTargetDistance = childToTarget.getLength();
 
     // it's better to be as close to the target as it's possible
     let reward = -childToTargetDistance;
@@ -119,6 +136,9 @@ export class World extends AbstractService {
       reward +=
         childToParentDistanceCoefficient * childToParentDistanceMultiplier;
     }
+
+    Vector2Pool.release(childToTarget);
+    Vector2Pool.release(childToParent);
 
     return reward;
   }
