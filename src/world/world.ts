@@ -1,3 +1,4 @@
+import Matter from "matter-js";
 import { ActionType } from "./action-type.enum";
 import { Child } from "./child";
 import { Parent } from "./parent";
@@ -7,9 +8,11 @@ export class World {
   public static readonly statesCount: number = 8;
   public static readonly actionsCount: number = 5; // move left, right, up, down, or stand
 
-  public child: Child;
-  public parent: Parent;
-  public target: Target;
+  protected physicsEngine: Matter.Engine;
+  protected physicsWorld: Matter.World;
+  protected child: Child;
+  protected parent: Parent;
+  protected target: Target;
 
   constructor() {
     this.init();
@@ -87,10 +90,28 @@ export class World {
     return reward;
   }
 
+  public getNumStates(): number {
+    return World.statesCount;
+  }
+
+  public getMaxNumActions(): number {
+    return World.actionsCount;
+  }
+
+  public update() {
+  }
+
   protected init(): void {
+    this.initPhysics();
     this.initChild();
     this.initParent();
     this.initTarget();
+  }
+
+  protected initPhysics(): void {
+    const engine = Matter.Engine.create();
+    this.physicsEngine = engine;
+    this.physicsWorld = engine.world;
   }
 
   protected initChild(): void {
