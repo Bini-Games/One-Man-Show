@@ -3,10 +3,10 @@ import { MoveableEntity } from "./moveable-entity";
 
 export class Parent extends MoveableEntity {
   public getAffectRadius(): number {
-    return 0.25 * GameConfig.MLScale;
+    return 125 * GameConfig.UnitSize;
   }
 
   public getRadius(): number {
-    return 0.05 * GameConfig.MLScale;
+    return 25 * GameConfig.UnitSize;
   }
 }

@@ -37,7 +37,7 @@ export class GameEntity extends Entity {
   }
 
   public getRadius(): number {
-    return 0.1 * GameConfig.MLScale;
+    return 50 * GameConfig.UnitSize;
   }
 
   protected getMass(): number {

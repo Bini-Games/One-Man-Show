@@ -18,7 +18,7 @@ export class TargetView extends AbstractEntityView<Target> {
     const target = this.entity;
     const view = new Graphics();
     view.beginFill(0x00ff00);
-    view.drawCircle(0, 0, target.getRadius() * GameConfig.WorldScale);
+    view.drawCircle(0, 0, target.getRadius() * GameConfig.ViewScale);
     view.endFill();
     this.view = view;
   }

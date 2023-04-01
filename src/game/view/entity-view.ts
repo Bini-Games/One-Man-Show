@@ -23,7 +23,7 @@ export abstract class AbstractEntityView<EntityType extends GameEntity = GameEnt
 
   protected updateViewPosition(): void {
     const entityPosition = this.entity.getPosition();
-    const scale = GameConfig.WorldScale;
+    const scale = GameConfig.ViewScale;
     this.setViewPosition(entityPosition.x * scale, entityPosition.y * scale);
   }
 

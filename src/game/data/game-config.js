@@ -1,4 +1,5 @@
 export const GameConfig = {
-  MLScale: 700,
-  WorldScale: 1,
+  UnitSize: 1,
+  WorldSize: 500,
+  ViewScale: 700 / 500,
 };

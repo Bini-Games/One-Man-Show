@@ -26,7 +26,7 @@ export class ParentView extends AbstractEntityView<Parent> {
     const parent = this.entity;
     const affectionZoneView = new Graphics();
     affectionZoneView.beginFill(0xff0000, 0.2);
-    affectionZoneView.drawCircle(0, 0, parent.getAffectRadius() * GameConfig.WorldScale);
+    affectionZoneView.drawCircle(0, 0, parent.getAffectRadius() * GameConfig.ViewScale);
     affectionZoneView.endFill();
     this.affectionZoneView = affectionZoneView;
   }
@@ -35,7 +35,7 @@ export class ParentView extends AbstractEntityView<Parent> {
     const parent = this.entity;
     const view = new Graphics();
     view.beginFill(0xff0000);
-    view.drawCircle(0, 0, parent.getRadius() * GameConfig.WorldScale);
+    view.drawCircle(0, 0, parent.getRadius() * GameConfig.ViewScale);
     view.endFill();
     this.view = view;
   }

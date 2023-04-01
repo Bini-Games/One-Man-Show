@@ -3,6 +3,6 @@ import { GameEntity } from "./game-entity";
 
 export class Target extends GameEntity {
   public getRadius(): number {
-    return 0.05 * GameConfig.MLScale;
+    return 25 * GameConfig.UnitSize;
   }
 }

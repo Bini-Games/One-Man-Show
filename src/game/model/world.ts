@@ -37,18 +37,18 @@ export class World extends AbstractService {
   }
 
   public reset(): void {
-    const MLScale = GameConfig.MLScale
+    const worldSize = GameConfig.WorldSize;
     const child = this.child;
     child.reset();
-    child.setPosition(Math.random() * MLScale, Math.random() * MLScale);
+    child.setPosition(Math.random() * worldSize, Math.random() * worldSize);
 
     const parent = this.parent;
     parent.reset();
-    parent.setPosition(Math.random() * MLScale, Math.random() * MLScale);
+    parent.setPosition(Math.random() * worldSize, Math.random() * worldSize);
 
     const target = this.target;
     target.reset();
-    target.setPosition(Math.random() * MLScale, Math.random() * MLScale);
+    target.setPosition(Math.random() * worldSize, Math.random() * worldSize);
   }
 
   public getState(): number[] {
@@ -58,6 +58,9 @@ export class World extends AbstractService {
 
     const childPosition = child.getPosition();
     const childVelocity = child.getVelocity();
+
+    const worldSize = GameConfig.WorldSize;
+    const worldSizeInv = 1 / worldSize;
 
     const childToTarget = target
       .getPosition()
@@ -70,14 +73,14 @@ export class World extends AbstractService {
       .sub(childPosition);
 
     return [
-      childPosition.x - 0.5,
-      childPosition.y - 0.5,
-      childVelocity.x * 10,
-      childVelocity.y * 10,
-      childToTarget.x,
-      childToTarget.y,
-      childToParent.x,
-      childToParent.y,
+      childPosition.x * worldSizeInv - 0.5,
+      childPosition.y * worldSizeInv - 0.5,
+      childVelocity.x * worldSizeInv * 10,
+      childVelocity.y * worldSizeInv * 10,
+      childToTarget.x * worldSizeInv,
+      childToTarget.y * worldSizeInv,
+      childToParent.x * worldSizeInv,
+      childToParent.y * worldSizeInv,
     ];
   }
 
