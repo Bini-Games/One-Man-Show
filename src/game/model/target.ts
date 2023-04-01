@@ -1,7 +1,7 @@
 import { GameEntity } from "./game-entity";
 
 export class Target extends GameEntity {
-  protected getRadius(): number {
+  public getRadius(): number {
     return 0.05;
   }
 }

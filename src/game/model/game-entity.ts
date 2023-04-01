@@ -31,7 +31,7 @@ export class GameEntity extends Entity {
     });
   }
 
-  protected getRadius(): number {
+  public getRadius(): number {
     return 0.1;
   }
 

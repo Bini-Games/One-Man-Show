@@ -5,7 +5,7 @@ export class Parent extends MoveableEntity {
     return 0.25;
   }
 
-  protected getRadius(): number {
+  public getRadius(): number {
     return 0.05;
   }
 }
