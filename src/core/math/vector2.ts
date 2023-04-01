@@ -1,5 +1,5 @@
 import * as assert from "typed-assert";
-import { Vector2Pool } from "../pools/vector2-pool";
+import { Pool } from "./pool";
 import { Math2 } from "./math2";
 import { IVector2 } from "./vector2.interface";
 
@@ -197,3 +197,12 @@ export class Vector2 implements IVector2 {
     return Vector2Pool.get().set(this.x, this.y);
   }
 }
+
+class Vector2PoolType extends Pool<Vector2> {
+  constructor(startingCapacity?: number) {
+    super(Vector2, startingCapacity);
+  }
+}
+
+export const Vector2Pool = new Vector2PoolType(200);
+

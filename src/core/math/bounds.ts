@@ -1,9 +1,8 @@
 import * as assert from "typed-assert";
-import { BoundsPool } from "../pools/bounds-pool";
-import { Vector2Pool } from "../pools/vector2-pool";
+import { Pool } from "./pool";
 import { Math2 } from "./math2";
 import { ISize } from "./size.interface";
-import { Vector2 } from "./vector2";
+import { Vector2, Vector2Pool } from "./vector2";
 import { IVector2 } from "./vector2.interface";
 
 export class Bounds implements ISize {
@@ -348,3 +347,12 @@ export class Bounds implements ISize {
     return result;
   }
 }
+
+class BoundsPoolType extends Pool<Bounds> {
+  constructor(startingCapacity?: number) {
+    super(Bounds, startingCapacity);
+  }
+}
+
+export const BoundsPool = new BoundsPoolType(20);
+
