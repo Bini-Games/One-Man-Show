@@ -184,7 +184,9 @@ export class World extends AbstractService {
   }
 
   protected initMap(): void {
-    this.map = new Map(this, this.physicsWorld);
+    const map = new Map(this, this.physicsWorld);
+    this.map = map;
+    map.init();
   }
 
   protected initChild(): void {
