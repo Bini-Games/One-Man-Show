@@ -1,6 +1,6 @@
 import { Container } from "pixi.js";
 import { GameConfig } from "../data/game-config";
-import { GameEntity } from "../model/game-entity";
+import { GameEntity } from "../model/entities/game-entity";
 
 export abstract class AbstractEntityView<EntityType extends GameEntity = GameEntity> {
   protected entity: EntityType = null;

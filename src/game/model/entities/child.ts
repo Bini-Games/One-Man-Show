@@ -1,4 +1,4 @@
-import { GameConfig } from "../data/game-config";
+import { GameConfig } from "../../data/game-config";
 import { MoveableEntity } from "./moveable-entity";
 
 export class Child extends MoveableEntity {

@@ -1,5 +1,5 @@
 import { Container, Graphics } from "pixi.js";
-import { Child } from "../model/child";
+import { Child } from "../model/entities/child";
 import { GameConfig } from "../data/game-config";
 import { AbstractEntityView } from "./entity-view";
 

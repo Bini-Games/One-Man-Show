@@ -1,7 +1,7 @@
 import * as Matter from "matter-js";
-import { Entity } from "../../core/components/entity";
-import { Vector2, Vector2Pool } from "../../core/math/vector2";
-import { GameConfig } from "../data/game-config";
+import { Entity } from "../../../core/components/entity";
+import { Vector2, Vector2Pool } from "../../../core/math/vector2";
+import { GameConfig } from "../../data/game-config";
 
 export class GameEntity extends Entity {
   protected body: Matter.Body = null;

@@ -1,9 +1,9 @@
 import * as Matter from "matter-js";
 import { ActionType } from "./action-type.enum";
-import { Child } from "./child";
-import { Parent } from "./parent";
-import { Target } from "./target";
-import { GameEntity } from "./game-entity";
+import { Child } from "./entities/child";
+import { Parent } from "./entities/parent";
+import { Target } from "./entities/target";
+import { GameEntity } from "./entities/game-entity";
 import { AbstractService } from "../../core/services/abstract-service";
 import { GameConfig } from "../data/game-config";
 import { Vector2, Vector2Pool } from "../../core/math/vector2";

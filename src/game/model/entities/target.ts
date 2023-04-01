@@ -1,4 +1,4 @@
-import { GameConfig } from "../data/game-config";
+import { GameConfig } from "../../data/game-config";
 import { GameEntity } from "./game-entity";
 
 export class Target extends GameEntity {
