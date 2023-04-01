@@ -5,6 +5,7 @@ import { Parent } from "./parent";
 import { Target } from "./target";
 import { GameEntity } from "./game-entity";
 import { AbstractService } from "../../core/services/abstract-service";
+import { GameConfig } from "../data/game-config";
 
 export class World extends AbstractService {
   public static readonly key: string = "World";
@@ -36,17 +37,18 @@ export class World extends AbstractService {
   }
 
   public reset(): void {
+    const MLScale = GameConfig.MLScale
     const child = this.child;
     child.reset();
-    child.setPosition(Math.random(), Math.random());
+    child.setPosition(Math.random() * MLScale, Math.random() * MLScale);
 
     const parent = this.parent;
     parent.reset();
-    parent.setPosition(Math.random(), Math.random());
+    parent.setPosition(Math.random() * MLScale, Math.random() * MLScale);
 
     const target = this.target;
     target.reset();
-    target.setPosition(Math.random(), Math.random());
+    target.setPosition(Math.random() * MLScale, Math.random() * MLScale);
   }
 
   public getState(): number[] {

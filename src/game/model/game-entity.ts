@@ -1,6 +1,7 @@
 import * as Matter from "matter-js";
 import { Entity } from "../../core/components/entity";
 import { Vector2 } from "../../core/math/vector2";
+import { GameConfig } from "../data/game-config";
 
 export class GameEntity extends Entity {
   protected body: Matter.Body = null;
@@ -36,7 +37,7 @@ export class GameEntity extends Entity {
   }
 
   public getRadius(): number {
-    return 0.1;
+    return 0.1 * GameConfig.MLScale;
   }
 
   protected getMass(): number {
