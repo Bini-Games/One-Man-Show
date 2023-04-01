@@ -36,15 +36,18 @@ export class World {
     const target = this.target;
     const parent = this.parent;
 
+    const childToTarget = target.position.clone().sub(child.position);
+    const childToParent = parent.position.clone().sub(child.position);
+
     return [
       child.position.x - 0.5,
       child.position.y - 0.5,
       child.velocity.x * 10,
       child.velocity.y * 10,
-      target.position.x - child.position.x,
-      target.position.y - child.position.y,
-      parent.position.x - child.position.x,
-      parent.position.y - child.position.y,
+      childToTarget.x,
+      childToTarget.y,
+      childToParent.x,
+      childToParent.y,
     ];
   }
 
@@ -52,7 +55,35 @@ export class World {
   }
 
   public getReward(): number {
-    return 0;
+    const child = this.child;
+    const target = this.target;
+    const parent = this.parent;
+
+    const childToTargetDistance = target.position
+      .clone()
+      .sub(child.position)
+      .getLength();
+
+    const childToParentDistance = parent.position
+      .clone()
+      .sub(child.position)
+      .getLength();
+
+    // it's better to be as close to the target as it's possible
+    let reward = -childToTargetDistance;
+
+    // but if we're too close to parent - that's bad
+    const affectRadius = parent.affectRadius;
+    if (childToParentDistance < affectRadius) {
+      const childToParentDistanceMultiplier = 2;
+      const childToParentDistanceCoefficient =
+        (childToParentDistance - affectRadius) / affectRadius;
+
+      reward +=
+        childToParentDistanceCoefficient * childToParentDistanceMultiplier;
+    }
+
+    return reward;
   }
 
   protected init(): void {
