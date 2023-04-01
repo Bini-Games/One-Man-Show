@@ -2,6 +2,7 @@ import * as TWEEN from "@tweenjs/tween.js";
 import { Application } from "pixi.js";
 import { Game } from "./core/facade/game";
 import { Logger } from "./core/facade/logger";
+import { EventBus } from "./core/facade/event-bus";
 import { World } from "./game/model/world";
 import { Timer } from "eventemitter3-timer";
 import { WorldView } from "./game/view/world-view";
@@ -20,6 +21,7 @@ const app = new Application({
 });
 
 Game.registerService(Logger.key, new Logger());
+Game.registerService(EventBus.key, new EventBus());
 
 const world = new World();
 Game.registerService(World.key, world);
