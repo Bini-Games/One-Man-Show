@@ -1,10 +1,12 @@
 import RL from "../../../vendor/rl/rl";
+import { Math2 } from "../../../core/math/math2";
 import { ActionType } from "../../model/action-type.enum";
 import { World } from "../../model/world";
 
 export class AgentController {
   protected agent: RL.DQNAgent = null;
   protected world: World = null;
+  protected previousReward: number = null;
 
   public setWorld(world: World): void {
     this.world = world;
@@ -12,7 +14,13 @@ export class AgentController {
 
   public learn(): void {
     const reward = this.world.getReward();
-    this.agent.learn(reward);
+
+    if (this.previousReward === null) {
+      this.previousReward = reward;
+    }
+
+    const smoothReward = Math2.lerp(this.previousReward, reward, 0.999);
+    this.agent.learn(smoothReward);
   }
 
   public act(): void {
