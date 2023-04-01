@@ -15,6 +15,10 @@ export class GameEntity extends Entity {
     this.body.position = Matter.Vector.create(x, y);
   }
 
+  public addToPhysicsWorld(world: Matter.World): void {
+    Matter.World.addBody(world, this.body);
+  }
+
   public init(): void {
     this.initBody();
   }

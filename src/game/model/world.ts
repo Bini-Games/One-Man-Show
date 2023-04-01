@@ -3,6 +3,7 @@ import { ActionType } from "./action-type.enum";
 import { Child } from "./child";
 import { Parent } from "./parent";
 import { Target } from "./target";
+import { GameEntity } from "./game-entity";
 
 export class World {
   public static readonly statesCount: number = 8;
@@ -126,14 +127,20 @@ export class World {
   }
 
   protected initChild(): void {
-    this.child = new Child();
+    this.child = this.setupGameEntity(new Child());
   }
 
   protected initParent(): void {
-    this.parent = new Parent();
+    this.parent = this.setupGameEntity(new Parent());
   }
 
   protected initTarget(): void {
-    this.target = new Target();
+    this.target = this.setupGameEntity(new Target());
+  }
+
+  protected setupGameEntity<EntityType extends GameEntity>(gameEntity: EntityType): EntityType {
+    gameEntity.init();
+    gameEntity.addToPhysicsWorld(this.physicsWorld);
+    return gameEntity;
   }
 }
