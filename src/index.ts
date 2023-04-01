@@ -5,6 +5,7 @@ import { Logger } from "./core/facade/logger";
 import { World } from "./game/model/world";
 import { Timer } from "eventemitter3-timer";
 import { WorldView } from "./game/view/world-view";
+import { LearningController } from "./game/controller/ml/learning-controller";
 
 const canvas = document.createElement("canvas");
 canvas.id = "game";
@@ -26,6 +27,9 @@ Game.registerService(World.key, world);
 const worldView = new WorldView(world);
 Game.registerService(WorldView.key, worldView);
 
+const learningController = new LearningController();
+Game.registerService(LearningController.key, learningController);
+
 window.onload = load;
 
 function load() {
@@ -36,6 +40,9 @@ function load() {
 
   worldView.init();
   app.stage.addChild(worldView.getContainer());
+
+  learningController.init(world);
+  learningController.start();
 
   tick();
 }
@@ -54,6 +61,7 @@ function tick() {
 
   while (accumulated >= dt) {
     world.fixedUpdate();
+    learningController.update();
     accumulated -= dt;
   }
 

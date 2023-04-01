@@ -2,6 +2,9 @@
   "cSpell.words": [
     "lerp",
     "pixi",
+    "qlearn",
+    "sarsa",
+    "tderror",
     "tweenjs"
   ]
 }

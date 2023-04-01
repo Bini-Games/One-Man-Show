@@ -8,10 +8,6 @@ export class AgentController {
   protected world: World = null;
   protected previousReward: number = null;
 
-  public setWorld(world: World): void {
-    this.world = world;
-  }
-
   public learn(): void {
     const reward = this.world.getReward();
 
@@ -30,7 +26,8 @@ export class AgentController {
     world.doAction(action);
   }
 
-  public init(): void {
+  public init(world: World): void {
+    this.world = world;
     this.initAgent();
   }
 

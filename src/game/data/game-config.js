@@ -3,4 +3,5 @@ export const GameConfig = {
   WorldSize: 500,
   ViewScale: 700 / 500,
   ChildSpeed: 1,
+  TicksPerAction: 10,
 };
