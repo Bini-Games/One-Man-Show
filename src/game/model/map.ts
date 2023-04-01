@@ -15,17 +15,21 @@ export class Map {
     this.physicsWorld = physicsWorld;
   }
 
+  public getObstacles(): Obstacle[] {
+    return this.obstacles.slice(0);
+  }
+
   public init(): void {
     this.initWalls();
   }
 
   protected initWalls(): void {
     const worldSize = GameConfig.WorldSize;
-    const wallThickness = worldSize * 0.01;
-    this.createWall(0, 0, worldSize, wallThickness, 0); // top
-    this.createWall(0, 0, wallThickness, worldSize, 0); // left
-    this.createWall(worldSize - wallThickness, 0, wallThickness, worldSize, 0); // right
-    this.createWall(0, worldSize - wallThickness, worldSize, wallThickness, 0); // bottom
+    const wallThickness = worldSize * 0.05;
+    this.createWall(worldSize * 0.5, 0, worldSize, wallThickness, 0); // top
+    this.createWall(worldSize * 0.5, worldSize, worldSize, wallThickness, 0); // bottom
+    this.createWall(0, worldSize * 0.5, wallThickness, worldSize, 0); // left
+    this.createWall(worldSize, worldSize * 0.5, wallThickness, worldSize, 0); // right
   }
 
   protected createWall(x: number, y: number, width: number, height: number, angle: number): Obstacle {
@@ -34,6 +38,8 @@ export class Map {
       angle,
       isStatic: true,
     }));
+    (<any>obstacle).width = width;
+    (<any>obstacle).height = height;
     return this.setupObstacle(obstacle);
   }
 

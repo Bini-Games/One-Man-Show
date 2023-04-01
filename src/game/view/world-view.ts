@@ -5,6 +5,7 @@ import { TargetView } from "./entities/target-view";
 import { AbstractEntityView } from "./entities/entity-view";
 import { AbstractService } from "../../core/services/abstract-service";
 import { World } from "../model/world";
+import { MapView } from "./map-view";
 
 export class WorldView extends AbstractService {
   public static readonly key: string = "WorldView";
@@ -13,6 +14,7 @@ export class WorldView extends AbstractService {
 
   protected world: World = null;
 
+  protected mapView: MapView = null;
   protected childView: ChildView = null;
   protected parentView: ParentView = null;
   protected targetView: TargetView = null;
@@ -29,12 +31,14 @@ export class WorldView extends AbstractService {
 
   public init(): void {
     this.initContainer();
+    this.initMapView();
     this.initChildView();
     this.initParentView();
     this.initTargetView();
   }
 
   public update(): void {
+    this.mapView.update();
     this.childView.update();
     this.parentView.update();
     this.targetView.update();
@@ -42,6 +46,13 @@ export class WorldView extends AbstractService {
 
   protected initContainer(): void {
     this.container = new Container();
+  }
+
+  protected initMapView(): void {
+    const mapView = new MapView(this.world.getMap());
+    this.mapView = mapView;
+    mapView.init();
+    this.container.addChild(mapView.getContainer());
   }
 
   protected initChildView(): void {
