@@ -21,9 +21,6 @@ export class World extends AbstractService {
 
   constructor() {
     super(World.key);
-
-    this.init();
-    this.reset();
   }
 
   public reset(): void {
@@ -120,7 +117,7 @@ export class World extends AbstractService {
     Matter.Engine.update(this.physicsEngine, World.physicsTimeStep);
   }
 
-  protected init(): void {
+  public init(): void {
     this.initPhysics();
     this.initChild();
     this.initParent();

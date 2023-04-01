@@ -24,6 +24,11 @@ window.onload = load;
 
 function load() {
   app.ticker.add(tick);
+
+  const world = Game.getService<World>(World.key);
+  world.init();
+  world.reset();
+
   tick();
 }
 
