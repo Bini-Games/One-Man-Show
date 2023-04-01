@@ -8,7 +8,8 @@ import { AbstractService } from "../../core/services/abstract-service";
 
 export class World extends AbstractService {
   public static readonly key: string = "World";
-  public static readonly timeStep: number = 1000 / 60;
+  public static readonly timeStep: number = 1 / 60;
+  public static readonly physicsTimeStep: number = World.timeStep * 1000;
   public static readonly statesCount: number = 8;
   public static readonly actionsCount: number = 5; // move left, right, up, down, or stand
 
@@ -115,8 +116,8 @@ export class World extends AbstractService {
     return World.actionsCount;
   }
 
-  public update() {
-    Matter.Engine.update(this.physicsEngine, World.timeStep);
+  public fixedUpdate() {
+    Matter.Engine.update(this.physicsEngine, World.physicsTimeStep);
   }
 
   protected init(): void {
@@ -127,7 +128,11 @@ export class World extends AbstractService {
   }
 
   protected initPhysics(): void {
-    const engine = Matter.Engine.create();
+    const engine = Matter.Engine.create({
+      gravity: {
+        y: 0,
+      },
+    });
     this.physicsEngine = engine;
     this.physicsWorld = engine.world;
   }
