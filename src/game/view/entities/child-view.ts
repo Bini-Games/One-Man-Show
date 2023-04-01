@@ -1,9 +1,9 @@
 import { Container, Graphics } from "pixi.js";
-import { Target } from "../model/entities/target";
-import { GameConfig } from "../data/game-config";
+import { Child } from "../../model/entities/child";
+import { GameConfig } from "../../data/game-config";
 import { AbstractEntityView } from "./entity-view";
 
-export class TargetView extends AbstractEntityView<Target> {
+export class ChildView extends AbstractEntityView<Child> {
   protected view: Graphics = null;
 
   public addTo(parent: Container): void {
@@ -15,10 +15,10 @@ export class TargetView extends AbstractEntityView<Target> {
   }
 
   protected initView(): void {
-    const target = this.entity;
+    const child = this.entity;
     const view = new Graphics();
-    view.beginFill(0x00ff00);
-    view.drawCircle(0, 0, target.getRadius() * GameConfig.ViewScale);
+    view.beginFill(0x0000ff);
+    view.drawCircle(0, 0, child.getRadius() * GameConfig.ViewScale);
     view.endFill();
     this.view = view;
   }

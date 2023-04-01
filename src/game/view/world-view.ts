@@ -1,8 +1,8 @@
 import { Container } from "pixi.js";
-import { ChildView } from "./child-view";
-import { ParentView } from "./parent-view";
-import { TargetView } from "./target-view";
-import { AbstractEntityView } from "./entity-view";
+import { ChildView } from "./entities/child-view";
+import { ParentView } from "./entities/parent-view";
+import { TargetView } from "./entities/target-view";
+import { AbstractEntityView } from "./entities/entity-view";
 import { AbstractService } from "../../core/services/abstract-service";
 import { World } from "../model/world";
 
