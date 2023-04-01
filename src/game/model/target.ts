@@ -1,4 +1,4 @@
-import { Vector2 } from "../core/math/vector2";
+import { Vector2 } from "../../core/math/vector2";
 
 export class Target {
   public radius: number = 0.05;
