@@ -22,6 +22,8 @@ export class GameEntity extends Entity {
 
   public reset(): void {}
 
+  public update() {}
+
   public init(): void {
     this.initBody();
   }

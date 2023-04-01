@@ -152,6 +152,9 @@ export class World extends AbstractService {
   }
 
   public fixedUpdate() {
+    this.child.update();
+    this.parent.update();
+    this.target.update();
     Matter.Engine.update(this.physicsEngine, World.physicsTimeStep);
   }
 

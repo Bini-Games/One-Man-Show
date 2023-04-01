@@ -11,7 +11,7 @@ export class MoveableEntity extends GameEntity {
 
   public setVelocity(x: number, y: number): void {
     this.velocity.set(x, y);
-    Matter.Body.setVelocity(this.body, Matter.Vector.create(x, y));
+    this.updateBodyVelocity();
   }
 
   public resetVelocity(): void {
@@ -23,10 +23,19 @@ export class MoveableEntity extends GameEntity {
     this.resetVelocity();
   }
 
+  public update(): void {
+    this.updateBodyVelocity();
+  }
+
   public destroy(): void {
     super.destroy();
 
     Vector2Pool.release(this.velocity);
     this.velocity = null;
+  }
+
+  protected updateBodyVelocity(): void {
+    const velocity = this.velocity;
+    Matter.Body.setVelocity(this.body, Matter.Vector.create(velocity.x, velocity.y));
   }
 }
