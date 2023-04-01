@@ -3,7 +3,7 @@ import { GameConfig } from "../data/game-config";
 import { GameEntity } from "../model/game-entity";
 
 export abstract class AbstractEntityView<EntityType extends GameEntity = GameEntity> {
-  protected entity: EntityType;
+  protected entity: EntityType = null;
 
   constructor(entity: EntityType) {
     this.entity = entity;

@@ -4,7 +4,7 @@ import { GameConfig } from "../data/game-config";
 import { AbstractEntityView } from "./entity-view";
 
 export class TargetView extends AbstractEntityView<Target> {
-  protected view: Graphics;
+  protected view: Graphics = null;
 
   public addTo(parent: Container): void {
     parent.addChild(this.view);

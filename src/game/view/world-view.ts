@@ -9,13 +9,13 @@ import { World } from "../model/world";
 export class WorldView extends AbstractService {
   public static readonly key: string = "WorldView";
 
-  protected container: Container;
+  protected container: Container = null;
 
-  protected world: World;
+  protected world: World = null;
 
-  protected childView: ChildView;
-  protected parentView: ParentView;
-  protected targetView: TargetView;
+  protected childView: ChildView = null;
+  protected parentView: ParentView = null;
+  protected targetView: TargetView = null;
 
   constructor(world: World) {
     super(WorldView.key);

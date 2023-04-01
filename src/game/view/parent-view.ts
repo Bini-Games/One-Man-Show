@@ -4,8 +4,8 @@ import { GameConfig } from "../data/game-config";
 import { AbstractEntityView } from "./entity-view";
 
 export class ParentView extends AbstractEntityView<Parent> {
-  protected affectionZoneView: Graphics;
-  protected view: Graphics;
+  protected affectionZoneView: Graphics = null;
+  protected view: Graphics = null;
 
   public addTo(parent: Container): void {
     parent.addChild(this.affectionZoneView);

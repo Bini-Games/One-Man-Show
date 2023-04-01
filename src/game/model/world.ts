@@ -15,11 +15,11 @@ export class World extends AbstractService {
   public static readonly statesCount: number = 8;
   public static readonly actionsCount: number = 5; // move left, right, up, down, or stand
 
-  protected physicsEngine: Matter.Engine;
-  protected physicsWorld: Matter.World;
-  protected child: Child;
-  protected parent: Parent;
-  protected target: Target;
+  protected physicsEngine: Matter.Engine = null;
+  protected physicsWorld: Matter.World = null;
+  protected child: Child = null;
+  protected parent: Parent = null;
+  protected target: Target = null;
   protected actionVelocities: Record<ActionType, Vector2> = {
     [ActionType.Left]: new Vector2(-1, 0),
     [ActionType.Right]: new Vector2(1, 0),
