@@ -1,10 +1,11 @@
+import { ActionType } from "./action-type.enum";
 import { Child } from "./child";
 import { Parent } from "./parent";
 import { Target } from "./target";
 
 export class World {
   public static readonly statesCount: number = 8;
-  public static readonly actionsCount: number = 5; // move left, right, up, down, or stay
+  public static readonly actionsCount: number = 5; // move left, right, up, down, or stand
 
   public child: Child;
   public parent: Parent;
@@ -51,7 +52,7 @@ export class World {
     ];
   }
 
-  public doAction(action: number): void {
+  public doAction(action: ActionType): void {
   }
 
   public getReward(): number {
