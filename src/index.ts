@@ -2,6 +2,7 @@ import * as TWEEN from "@tweenjs/tween.js";
 import { Application } from "pixi.js";
 import { Game } from "./core/facade/game";
 import { Logger } from "./core/facade/logger";
+import { World } from "./game/model/world";
 
 const canvas = document.createElement("canvas");
 canvas.id = "game";
@@ -16,6 +17,7 @@ const app = new Application({
 });
 
 Game.registerService(Logger.key, new Logger());
+Game.registerService(World.key, new World());
 
 window.onload = load;
 

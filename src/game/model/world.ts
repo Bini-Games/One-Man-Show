@@ -1,11 +1,14 @@
-import Matter from "matter-js";
+import * as Matter from "matter-js";
 import { ActionType } from "./action-type.enum";
 import { Child } from "./child";
 import { Parent } from "./parent";
 import { Target } from "./target";
 import { GameEntity } from "./game-entity";
+import { AbstractService } from "../../core/services/abstract-service";
 
-export class World {
+export class World extends AbstractService {
+  public static readonly key: string = "World";
+  public static readonly timeStep: number = 1000 / 60;
   public static readonly statesCount: number = 8;
   public static readonly actionsCount: number = 5; // move left, right, up, down, or stand
 
@@ -16,6 +19,8 @@ export class World {
   protected target: Target;
 
   constructor() {
+    super(World.key);
+
     this.init();
     this.reset();
   }
@@ -111,6 +116,7 @@ export class World {
   }
 
   public update() {
+    Matter.Engine.update(this.physicsEngine, World.timeStep);
   }
 
   protected init(): void {

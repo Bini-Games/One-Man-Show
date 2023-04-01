@@ -1,6 +1,6 @@
+import * as Matter from "matter-js";
 import { GameEntity } from "./game-entity";
 import { Vector2 } from "../../core/math/vector2";
-import Matter from "matter-js";
 
 export class MoveableEntity extends GameEntity {
   protected velocity: Vector2 = new Vector2();

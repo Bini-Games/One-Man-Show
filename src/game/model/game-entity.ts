@@ -1,10 +1,10 @@
-import Matter from "matter-js";
+import * as Matter from "matter-js";
 import { Entity } from "../../core/components/entity";
 import { Vector2 } from "../../core/math/vector2";
 
 export class GameEntity extends Entity {
   protected body: Matter.Body = null;
-  protected position: Vector2;
+  protected position: Vector2 = new Vector2();
 
   public getPosition(): Vector2 {
     return this.position.copyFrom(this.body.position);
