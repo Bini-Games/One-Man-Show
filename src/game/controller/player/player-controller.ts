@@ -51,7 +51,11 @@ export class PlayerController extends AbstractService {
   }
 
   protected update(): void {
-    this.camera.setCenter(this.parent.getPosition());
+    const parentPosition = this.parent.getPosition();
+    const cameraCenter = parentPosition
+      .clone()
+      .multiplyByScalar(GameConfig.ViewScale);
+    this.camera.animateCenter(cameraCenter);
   }
 
   protected onResize(): void {
