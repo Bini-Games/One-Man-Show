@@ -1,4 +1,3 @@
-import * as assert from "typed-assert";
 import { AbstractService } from "../services/abstract-service";
 
 export class EventBus extends AbstractService {

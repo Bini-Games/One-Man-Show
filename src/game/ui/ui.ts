@@ -33,7 +33,7 @@ export class UI extends Container {
   }
 
   protected listenEvents(): void {
-    Game.layout.onResize.connect(this.onResize.bind(this));
+    Game.events.on('resize', this.onResize, this);
 
     const overlay = this.overlay;
     overlay.on('pointerdown', this.onPointerDown, this);

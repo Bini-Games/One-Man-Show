@@ -2,6 +2,7 @@ import RL from "../../../vendor/rl/rl";
 import { Math2 } from "../../../core/math/math2";
 import { ActionType } from "../../model/action-type.enum";
 import { World } from "../../model/world";
+import { Game } from "../../../core/facade/game";
 
 export class AgentController {
   protected agent: RL.DQNAgent = null;
@@ -26,8 +27,8 @@ export class AgentController {
     world.doAction(action);
   }
 
-  public init(world: World): void {
-    this.world = world;
+  public init(): void {
+    this.world = Game.getService(World.key);
     this.initAgent();
   }
 

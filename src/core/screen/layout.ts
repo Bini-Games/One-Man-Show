@@ -3,6 +3,7 @@ import { IRenderer, Container } from "pixi.js";
 import { ILayoutConfig } from "./layout-config.interface";
 import { Math2 } from "../math/math2";
 import { AbstractService } from "../services/abstract-service";
+import { Game } from "../facade/game";
 
 export class Layout extends AbstractService {
   public static readonly key: string = "Layout";
@@ -158,6 +159,7 @@ export class Layout extends AbstractService {
     container.scale.set(scaleInv);
 
     this.onResize.emit();
+    Game.events.emit('resize');
   }
 
   public reset(): void {

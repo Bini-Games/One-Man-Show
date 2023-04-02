@@ -6,6 +6,7 @@ import { AbstractEntityView } from "./entities/entity-view";
 import { AbstractService } from "../../core/services/abstract-service";
 import { World } from "../model/world";
 import { MapView } from "./map-view";
+import { Game } from "../../core/facade/game";
 
 export class WorldView extends AbstractService {
   public static readonly key: string = "WorldView";
@@ -19,10 +20,8 @@ export class WorldView extends AbstractService {
   protected parentView: ParentView = null;
   protected targetView: TargetView = null;
 
-  constructor(world: World) {
+  constructor() {
     super(WorldView.key);
-
-    this.world = world;
   }
 
   public getContainer(): Container {
@@ -30,18 +29,13 @@ export class WorldView extends AbstractService {
   }
 
   public init(): void {
+    this.world = Game.getService(World.key);
     this.initContainer();
     this.initMapView();
     this.initChildView();
     this.initParentView();
     this.initTargetView();
-  }
-
-  public update(): void {
-    this.mapView.update();
-    this.childView.update();
-    this.parentView.update();
-    this.targetView.update();
+    this.listenEvents();
   }
 
   protected initContainer(): void {
@@ -71,5 +65,16 @@ export class WorldView extends AbstractService {
     view.init();
     view.addTo(this.container);
     return view;
+  }
+
+  protected listenEvents(): void {
+    Game.events.addListener('update', this.update, this);
+  }
+
+  protected update(): void {
+    this.mapView.update();
+    this.childView.update();
+    this.parentView.update();
+    this.targetView.update();
   }
 }

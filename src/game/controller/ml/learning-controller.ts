@@ -1,12 +1,11 @@
+import { Game } from "../../../core/facade/game";
 import { AbstractService } from "../../../core/services/abstract-service";
 import { GameConfig } from "../../data/game-config";
-import { World } from "../../model/world";
 import { AgentController } from "./agent-controller";
 
 export class LearningController extends AbstractService {
   public static readonly key: string = "LearningController";
 
-  protected world: World = null;
   protected agentController: AgentController = null;
   protected ticksTillAction: number = GameConfig.TicksPerAction;
 
@@ -18,23 +17,27 @@ export class LearningController extends AbstractService {
     this.act();
   }
 
-  public update(): void {
-    if (--this.ticksTillAction === 0) {
-      this.ticksTillAction = GameConfig.TicksPerAction;
-      this.learn();
-      this.act();
-    }
-  }
-
-  public init(world: World): void {
-    this.world = world;
+  public init(): void {
     this.initAgentController();
+    this.listenEvents();
   }
 
   protected initAgentController(): void {
     const agentController = new AgentController();
     this.agentController = agentController;
-    agentController.init(this.world);
+    agentController.init();
+  }
+
+  protected listenEvents(): void {
+    Game.events.addListener('fixedUpdate', this.fixedUpdate, this);
+  }
+
+  protected fixedUpdate(): void {
+    if (--this.ticksTillAction === 0) {
+      this.ticksTillAction = GameConfig.TicksPerAction;
+      this.learn();
+      this.act();
+    }
   }
 
   protected learn(): void {

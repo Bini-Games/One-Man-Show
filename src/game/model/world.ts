@@ -8,6 +8,7 @@ import { AbstractService } from "../../core/services/abstract-service";
 import { GameConfig } from "../data/game-config";
 import { Vector2, Vector2Pool } from "../../core/math/vector2";
 import { Map } from "./map";
+import { Game } from "../../core/facade/game";
 
 export class World extends AbstractService {
   public static readonly key: string = "World";
@@ -158,19 +159,13 @@ export class World extends AbstractService {
     return World.actionsCount;
   }
 
-  public fixedUpdate() {
-    this.child.update();
-    this.parent.update();
-    this.target.update();
-    Matter.Engine.update(this.physicsEngine, World.physicsTimeStep);
-  }
-
   public init(): void {
     this.initPhysics();
     this.initMap();
     this.initChild();
     this.initParent();
     this.initTarget();
+    this.listenEvents();
   }
 
   protected initPhysics(): void {
@@ -205,5 +200,16 @@ export class World extends AbstractService {
     gameEntity.init();
     gameEntity.addToPhysicsWorld(this.physicsWorld);
     return gameEntity;
+  }
+
+  protected listenEvents(): void {
+    Game.events.addListener('fixedUpdate', this.fixedUpdate, this);
+  }
+
+  protected fixedUpdate() {
+    this.child.update();
+    this.parent.update();
+    this.target.update();
+    Matter.Engine.update(this.physicsEngine, World.physicsTimeStep);
   }
 }

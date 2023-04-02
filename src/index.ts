@@ -13,6 +13,8 @@ import { AssetsData } from "./game/data/assets-data";
 import { UI } from "./game/ui/ui";
 import { GameConfig } from "./game/data/game-config";
 import { PlayerController } from "./game/controller/player/player-controller";
+import { UIService } from "./game/ui/ui-service";
+import Camera from "./core/screen/camera";
 
 const canvas = document.createElement("canvas");
 canvas.id = "game";
@@ -37,7 +39,7 @@ Game.registerService(World.key, world);
 const layout = new Layout();
 Game.registerService(Layout.key, layout);
 
-const worldView = new WorldView(world);
+const worldView = new WorldView();
 Game.registerService(WorldView.key, worldView);
 
 const learningController = new LearningController();
@@ -45,6 +47,9 @@ Game.registerService(LearningController.key, learningController);
 
 const playerController = new PlayerController();
 Game.registerService(PlayerController.key, playerController);
+
+const camera = new Camera();
+Game.registerService(Camera.key, camera);
 
 window.onload = load;
 
@@ -75,18 +80,23 @@ function create() {
   app.stage.addChild(ui);
   ui.init();
 
+  Game.registerService(UIService.key, new UIService(ui));
+
   layout.init({
     container: ui,
     renderer: app.renderer,
     longSide: GameConfig.LayoutLongSide,
     shortSide: GameConfig.LayoutShortSide,
   });
-  layout.updateSize();
 
-  playerController.init(world.getParent(), ui.getJoystick());
+  camera.init();
+  camera.setContainer(worldView.getContainer());
 
-  learningController.init(world);
+  playerController.init();
+  learningController.init();
   learningController.start();
+
+  layout.updateSize();
 
   tick();
 }
@@ -104,12 +114,11 @@ function tick() {
   const dt = World.timeStep;
 
   while (accumulated >= dt) {
-    world.fixedUpdate();
-    learningController.update();
+    Game.events.emit('fixedUpdate');
     accumulated -= dt;
   }
 
-  worldView.update();
+  Game.events.emit('update', frameTime);
 
   app.renderer.render(app.stage);
 }
