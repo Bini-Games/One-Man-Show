@@ -17,9 +17,10 @@ export class GameActor extends MoveableEntity {
     const affectRadius = this.getTargetAffectionRadius();
 
     for (const target of targets) {
-      const distance = target
+      const centerDistance = target
         .getPosition()
         .distanceTo(position);
+      const distance = centerDistance - target.getRadius();
 
       if (distance < affectRadius) {
         target.affectCondition(change);
