@@ -1,4 +1,5 @@
 export const GameConfig = {
+  DebugView: true,
   LayoutLongSide: 960,
   LayoutShortSide: 640,
   UnitSize: 1,
