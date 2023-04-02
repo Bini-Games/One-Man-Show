@@ -27,10 +27,15 @@ export class ChildView extends AbstractEntityView<Child> {
   protected initDebugView(): void {
     const child = this.entity;
     const view = new Graphics();
+    this.debugView = view;
+
+    view.beginFill(0xffff00, 0.2);
+    view.drawCircle(0, 0, child.getTargetAffectionRadius() * GameConfig.ViewScale);
+    view.endFill();
+
     view.beginFill(0x0000ff);
     view.drawCircle(0, 0, child.getRadius() * GameConfig.ViewScale);
     view.endFill();
-    this.debugView = view;
   }
 
   protected initView(): void {

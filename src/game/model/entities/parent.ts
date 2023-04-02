@@ -1,12 +1,16 @@
 import { GameConfig } from "../../data/game-config";
-import { MoveableEntity } from "./moveable-entity";
+import { GameActor } from "./game-actor";
 
-export class Parent extends MoveableEntity {
-  public getAffectRadius(): number {
+export class Parent extends GameActor {
+  public getDangerRadius(): number {
     return 150 * GameConfig.UnitSize;
   }
 
   public getRadius(): number {
     return 33 * GameConfig.UnitSize;
+  }
+
+  public getConditionChange(): number {
+    return +2;
   }
 }

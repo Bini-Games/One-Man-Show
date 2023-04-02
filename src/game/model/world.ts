@@ -143,11 +143,11 @@ export class World extends AbstractService {
     let reward = -childToTargetDistance;
 
     // but if we're too close to parent - that's bad
-    const affectRadius = parent.getAffectRadius() * worldSizeInv;
-    if (childToParentDistance < affectRadius) {
+    const dangerRadius = parent.getDangerRadius() * worldSizeInv;
+    if (childToParentDistance < dangerRadius) {
       const childToParentDistanceMultiplier = 2;
       const childToParentDistanceCoefficient =
-        (childToParentDistance - affectRadius) / affectRadius;
+        (childToParentDistance - dangerRadius) / dangerRadius;
 
       reward +=
         childToParentDistanceCoefficient * childToParentDistanceMultiplier;
@@ -226,15 +226,20 @@ export class World extends AbstractService {
   }
 
   protected fixedUpdate() {
-    this.child.update();
-    this.parent.update();
-
+    const child = this.child;
+    const parent = this.parent;
     const targets = this.targets;
+
+    child.update();
+    parent.update();
 
     for (const target of targets) {
       target.update();
     }
 
     Matter.Engine.update(this.physicsEngine, World.physicsTimeStep);
+
+    child.affectTargets(targets);
+    parent.affectTargets(targets);
   }
 }

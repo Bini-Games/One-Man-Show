@@ -29,10 +29,11 @@ export class TargetView extends AbstractEntityView<Target> {
   protected initDebugView(): void {
     const target = this.entity;
     const view = new Graphics();
+    this.debugView = view;
+
     view.beginFill(0x00ff00);
     view.drawCircle(0, 0, target.getRadius() * GameConfig.ViewScale);
     view.endFill();
-    this.debugView = view;
   }
 
   protected initView(): void {

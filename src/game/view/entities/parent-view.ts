@@ -4,47 +4,53 @@ import { GameConfig } from "../../data/game-config";
 import { AbstractEntityView } from "./entity-view";
 
 export class ParentView extends AbstractEntityView<Parent> {
-  protected affectionZoneView: Graphics = null;
+  protected dangerZoneView: Graphics = null;
   protected debugView: Graphics = null;
   protected view: Sprite = null;
 
   public addTo(parent: Container): void {
-    parent.addChild(this.affectionZoneView);
+    parent.addChild(this.dangerZoneView);
     parent.addChild(this.debugView);
     parent.addChild(this.view);
   }
 
   protected setViewPosition(x: number, y: number): void {
-    this.affectionZoneView.position.set(x, y);
+    this.dangerZoneView.position.set(x, y);
     this.debugView.position.set(x, y);
     this.view.position.set(x, y);
   }
 
   public init(): void {
-    this.initAffectionZoneView();
+    this.initDangerZoneView();
     this.initDebugView();
     this.initView();
 
-    this.affectionZoneView.visible = GameConfig.DebugView;
+    this.dangerZoneView.visible = GameConfig.DebugView;
     this.debugView.visible = GameConfig.DebugView;
   }
 
-  protected initAffectionZoneView(): void {
+  protected initDangerZoneView(): void {
     const parent = this.entity;
-    const affectionZoneView = new Graphics();
-    affectionZoneView.beginFill(0xff0000, 0.2);
-    affectionZoneView.drawCircle(0, 0, parent.getAffectRadius() * GameConfig.ViewScale);
-    affectionZoneView.endFill();
-    this.affectionZoneView = affectionZoneView;
+    const dangerZoneView = new Graphics();
+    this.dangerZoneView = dangerZoneView;
+
+    dangerZoneView.beginFill(0xff0000, 0.2);
+    dangerZoneView.drawCircle(0, 0, parent.getDangerRadius() * GameConfig.ViewScale);
+    dangerZoneView.endFill();
   }
 
   protected initDebugView(): void {
     const parent = this.entity;
     const view = new Graphics();
+    this.debugView = view;
+
+    view.beginFill(0xffff00, 0.2);
+    view.drawCircle(0, 0, parent.getTargetAffectionRadius() * GameConfig.ViewScale);
+    view.endFill();
+
     view.beginFill(0xff0000);
     view.drawCircle(0, 0, parent.getRadius() * GameConfig.ViewScale);
     view.endFill();
-    this.debugView = view;
   }
 
   protected initView(): void {
