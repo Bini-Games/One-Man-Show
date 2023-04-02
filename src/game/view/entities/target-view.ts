@@ -22,6 +22,7 @@ export class TargetView extends AbstractEntityView<Target> {
   public init(): void {
     this.initDebugView();
     this.initView();
+    this.listenEvents();
 
     this.debugView.visible = GameConfig.DebugView;
   }
@@ -41,6 +42,10 @@ export class TargetView extends AbstractEntityView<Target> {
     this.view = view;
     view.anchor.set(0.5);
     view.scale.set(this.getViewScale());
+  }
+
+  protected listenEvents(): void {
+    Game.events.on("gameplay:target_broken_changed", this.onTargetBrokenStateChanged, this);
   }
 
   protected getTextureOk(): Texture {
@@ -69,7 +74,7 @@ export class TargetView extends AbstractEntityView<Target> {
       case TargetType.Doll:
         return Assets.cache.get("map:doll:broken");
       case TargetType.Ball:
-        Game.logger.fail(`Ball can't be broken`);
+        return Assets.cache.get("map:ball:ok");
     }
   }
 
@@ -85,6 +90,19 @@ export class TargetView extends AbstractEntityView<Target> {
         return 0.08;
       case TargetType.Ball:
         return 0.125;
+    }
+  }
+
+  protected onTargetBrokenStateChanged(target: Target): void {
+    if (this.entity !== target) {
+      return;
+    }
+
+    const newTexture = target.isBroken() ? this.getTextureBroken() : this.getTextureOk();
+    const view = this.view;
+
+    if (view.texture !== newTexture) {
+      view.texture = newTexture;
     }
   }
 }
