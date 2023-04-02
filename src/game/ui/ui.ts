@@ -3,10 +3,12 @@ import { Joystick } from "./joystick/joystick";
 import { Game } from "../../core/facade/game";
 import { Math2 } from "../../core/math/math2";
 import { GameConfig } from "../data/game-config";
+import { ScoreCounter } from "./score/score-counter";
 
 export class UI extends Container {
   protected overlay: Sprite = null;
   protected joystick: Joystick = null;
+  protected scoreCounter: ScoreCounter = null;
   protected isJoystickDown: boolean = false;
 
   public getJoystick(): Joystick {
@@ -16,6 +18,7 @@ export class UI extends Container {
   public init(): void {
     this.initOverlay();
     this.initJoystick();
+    this.initScoreCounter();
     this.listenEvents();
 
     this.joystick.visible = !GameConfig.IsLearning;
@@ -33,6 +36,13 @@ export class UI extends Container {
     this.joystick = joystick;
     this.addChild(joystick);
     joystick.init();
+  }
+
+  protected initScoreCounter(): void {
+    const scoreCounter = new ScoreCounter();
+    this.scoreCounter = scoreCounter;
+    this.addChild(scoreCounter);
+    scoreCounter.init();
   }
 
   protected listenEvents(): void {

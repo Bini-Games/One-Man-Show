@@ -18,6 +18,7 @@ import { Camera } from "./core/screen/camera";
 import { requestFullscreen } from "./core/screen/fullscreen";
 import { BotController } from "./game/controller/parent/bot-controller";
 import { ParentController } from "./game/controller/parent/parent-controller";
+import { ScoreController } from "./game/controller/gameplay/score-controller";
 
 const canvas = document.createElement("canvas");
 canvas.id = GameConfig.CanvasId;
@@ -50,6 +51,9 @@ Game.registerService(LearningController.key, learningController);
 
 const parentController = GameConfig.IsLearning ? new BotController() : new PlayerController();
 Game.registerService(ParentController.key, parentController);
+
+const scoreController = new ScoreController();
+Game.registerService(ScoreController.key, scoreController);
 
 const camera = new Camera();
 Game.registerService(Camera.key, camera);
@@ -98,6 +102,7 @@ function create() {
   Game.events.once("pointerdown", () => requestFullscreen());
 
   parentController.init();
+  scoreController.init();
   learningController.init();
   learningController.start();
 

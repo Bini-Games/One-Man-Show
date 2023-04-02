@@ -26,6 +26,10 @@ export class Target extends MoveableEntity {
     return this.broken;
   }
 
+  public isFull(): boolean {
+    return this.condition === GameConfig.NormalCondition;
+  }
+
   public affectCondition(change: number): void {
     this.condition = Math2.clamp(this.condition + change, 0, GameConfig.NormalCondition);
 
