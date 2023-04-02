@@ -26,10 +26,11 @@ export class Map {
   protected initWalls(): void {
     const worldSize = GameConfig.WorldSize;
     const wallThickness = worldSize * 0.05;
-    this.createWall(worldSize * 0.5, 0, worldSize, wallThickness, 0); // top
-    this.createWall(worldSize * 0.5, worldSize, worldSize, wallThickness, 0); // bottom
-    this.createWall(0, worldSize * 0.5, wallThickness, worldSize, 0); // left
-    this.createWall(worldSize, worldSize * 0.5, wallThickness, worldSize, 0); // right
+    const halfThickness = wallThickness * 0.5;
+    this.createWall(worldSize * 0.5, -halfThickness, worldSize, wallThickness, 0); // top
+    this.createWall(worldSize * 0.5, worldSize + halfThickness, worldSize, wallThickness, 0); // bottom
+    this.createWall(-halfThickness, worldSize * 0.5, wallThickness, worldSize, 0); // left
+    this.createWall(worldSize + halfThickness, worldSize * 0.5, wallThickness, worldSize, 0); // right
   }
 
   protected createWall(x: number, y: number, width: number, height: number, angle: number): Obstacle {
