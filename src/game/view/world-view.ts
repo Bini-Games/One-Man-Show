@@ -18,7 +18,7 @@ export class WorldView extends AbstractService {
   protected mapView: MapView = null;
   protected childView: ChildView = null;
   protected parentView: ParentView = null;
-  protected targetView: TargetView = null;
+  protected targetsViews: TargetView[] = [];
 
   constructor() {
     super(WorldView.key);
@@ -34,7 +34,7 @@ export class WorldView extends AbstractService {
     this.initMapView();
     this.initChildView();
     this.initParentView();
-    this.initTargetView();
+    this.initTargetsViews();
     this.listenEvents();
   }
 
@@ -57,8 +57,13 @@ export class WorldView extends AbstractService {
     this.parentView = this.setupGameObjectView(new ParentView(this.world.getParent()));
   }
 
-  protected initTargetView(): void {
-    this.targetView = this.setupGameObjectView(new TargetView(this.world.getCurrentTarget()));
+  protected initTargetsViews(): void {
+    const targets = this.world.getTargets();
+    const targetsViews = this.targetsViews;
+
+    for (const target of targets) {
+      targetsViews.push(this.setupGameObjectView(new TargetView(target)));
+    }
   }
 
   protected setupGameObjectView<ViewType extends AbstractEntityView>(view: ViewType): ViewType {
@@ -75,6 +80,11 @@ export class WorldView extends AbstractService {
     this.mapView.update();
     this.childView.update();
     this.parentView.update();
-    this.targetView.update();
+
+    const targetsViews = this.targetsViews;
+
+    for (const targetView of targetsViews) {
+      targetView.update();
+    }
   }
 }
