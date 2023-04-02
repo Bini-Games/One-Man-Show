@@ -1,6 +1,7 @@
-import { Container } from "pixi.js";
+import { Assets, Container, Sprite } from "pixi.js";
 import { Map } from "../model/map";
 import { WallView } from "./entities/obstacles/wall-view";
+import { GameConfig } from "../data/game-config";
 
 export class MapView {
   protected container: Container = null;
@@ -19,6 +20,7 @@ export class MapView {
 
   public init(): void {
     this.initContainer();
+    this.initBg();
     this.initObstaclesViews();
   }
 
@@ -32,6 +34,14 @@ export class MapView {
 
   protected initContainer(): void {
     this.container = new Container();
+  }
+
+  protected initBg(): void {
+    const bg = new Sprite(Assets.cache.get('map:room_bg'));
+    this.container.addChild(bg);
+    bg.anchor.set(0.5, 0.525);
+    bg.position.set(GameConfig.WorldViewSize * 0.5);
+    bg.scale.set(1);
   }
 
   protected initObstaclesViews(): void {

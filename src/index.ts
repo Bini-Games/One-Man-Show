@@ -27,7 +27,7 @@ const app = new Application({
   width: 700,
   height: 700,
   antialias: true,
-  backgroundColor: 0x353540,
+  backgroundColor: 0x795d45,
   view: canvas,
 });
 
