@@ -118,7 +118,23 @@ export class TargetView extends AbstractEntityView<Target> {
       return;
     }
 
-    this.conditionPb.setProgress(target.getCondition() / GameConfig.NormalCondition);
+    const progress = target.getCondition() / GameConfig.NormalCondition;
+    const conditionPb = this.conditionPb;
+    conditionPb.setProgress(progress);
+    conditionPb.fillColor = this.getProgressBarColor(progress);
+    conditionPb.updateStyle();
+  }
+
+  protected getProgressBarColor(progress: number): string {
+    if (progress === 1) {
+      return "green";
+    } else if (progress < 0.33) {
+      return "red";
+    } else if (progress < 0.66) {
+      return "orange";
+    } else {
+      return "yellow";
+    }
   }
 
   protected onTargetBrokenStateChanged(target: Target): void {
