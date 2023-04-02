@@ -1,27 +1,20 @@
 import { Game } from "../../../core/facade/game";
-import { Math2 } from "../../../core/math/math2";
-import Camera from "../../../core/screen/camera";
-import { AbstractService } from "../../../core/services/abstract-service";
+import { Camera } from "../../../core/screen/camera";
 import { GameConfig } from "../../data/game-config";
-import { Parent } from "../../model/entities/parent";
-import { World } from "../../model/world";
 import { Joystick } from "../../ui/joystick/joystick";
 import { UIService } from "../../ui/ui-service";
+import { ParentController } from "./parent-controller";
 
-export class PlayerController extends AbstractService {
-  public static readonly key: string = "PlayerController";
+export class PlayerController extends ParentController {
+  public static readonly key: string = ParentController.key;
 
-  protected parent: Parent = null;
   protected joystick: Joystick = null;
   protected camera: Camera = null;
   protected isMoving: boolean = false;
 
-  constructor() {
-    super(PlayerController.key);
-  }
-
   public init(): void {
-    this.parent = Game.getService<World>(World.key).getParent();
+    super.init();
+
     this.joystick = Game.getService<UIService>(UIService.key).ui.getJoystick();
     this.camera = Game.getService<Camera>(Camera.key);
 

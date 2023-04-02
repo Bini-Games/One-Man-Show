@@ -4,7 +4,7 @@ import { Game } from "../facade/game";
 import { Math2 } from "../math/math2";
 import { AbstractService } from "../services/abstract-service";
 
-export default class Camera extends AbstractService {
+export class Camera extends AbstractService {
   public static readonly key: string = "Camera";
 
   protected container: Container;

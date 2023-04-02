@@ -14,8 +14,10 @@ import { UI } from "./game/ui/ui";
 import { GameConfig } from "./game/data/game-config";
 import { PlayerController } from "./game/controller/parent/player-controller";
 import { UIService } from "./game/ui/ui-service";
-import Camera from "./core/screen/camera";
+import { Camera } from "./core/screen/camera";
 import { requestFullscreen } from "./core/screen/fullscreen";
+import { BotController } from "./game/controller/parent/bot-controller";
+import { ParentController } from "./game/controller/parent/parent-controller";
 
 const canvas = document.createElement("canvas");
 canvas.id = GameConfig.CanvasId;
@@ -46,8 +48,8 @@ Game.registerService(WorldView.key, worldView);
 const learningController = new LearningController();
 Game.registerService(LearningController.key, learningController);
 
-const playerController = new PlayerController();
-Game.registerService(PlayerController.key, playerController);
+const parentController = GameConfig.IsLearning ? new BotController() : new PlayerController();
+Game.registerService(ParentController.key, parentController);
 
 const camera = new Camera();
 Game.registerService(Camera.key, camera);
@@ -95,7 +97,7 @@ function create() {
 
   Game.events.once("pointerdown", () => requestFullscreen());
 
-  playerController.init();
+  parentController.init();
   learningController.init();
   learningController.start();
 

@@ -2,6 +2,7 @@ import { Assets, Container, FederatedPointerEvent, Sprite } from "pixi.js";
 import { Joystick } from "./joystick/joystick";
 import { Game } from "../../core/facade/game";
 import { Math2 } from "../../core/math/math2";
+import { GameConfig } from "../data/game-config";
 
 export class UI extends Container {
   protected overlay: Sprite = null;
@@ -16,6 +17,8 @@ export class UI extends Container {
     this.initOverlay();
     this.initJoystick();
     this.listenEvents();
+
+    this.joystick.visible = !GameConfig.IsLearning;
   }
 
   protected initOverlay(): void {
