@@ -223,6 +223,7 @@ export class World extends AbstractService {
 
   protected listenEvents(): void {
     Game.events.on("fixedUpdate", this.fixedUpdate, this);
+    Game.events.on("gameplay:target_broken", this.onTargetBroken, this);
   }
 
   protected fixedUpdate() {
@@ -241,5 +242,13 @@ export class World extends AbstractService {
 
     child.affectTargets(targets);
     parent.affectTargets(targets);
+  }
+
+  protected onTargetBroken(target: Target): void {
+    if (target !== this.currentTarget) {
+      return;
+    }
+
+    this.pickRandomTarget();
   }
 }
