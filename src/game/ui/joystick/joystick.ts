@@ -1,4 +1,4 @@
-import { Container, Sprite } from "pixi.js";
+import { Assets, Container, Sprite } from "pixi.js";
 import { Vector2 } from "../../../core/math/vector2";
 import { Signal } from "typed-signals";
 import { Tween } from "@tweenjs/tween.js";
@@ -11,12 +11,19 @@ export class Joystick extends Container {
   protected thumb: Sprite = null;
   protected downPosition: Vector2 = new Vector2();
   protected defaultPosition: Vector2 = new Vector2();
-  protected radius = 100;
+  protected radius = 150;
   protected releaseTween: Tween<unknown> = null;
+  protected isActivated: boolean = false;
+
+  public getRadius(): number {
+    return this.radius;
+  }
 
   public release(): void {
     this.thumb.position.set(0);
     this.animateRelease();
+    this.isActivated = false;
+    this.updateAlpha();
     this.onChanged.emit(0, 0);
   }
 
@@ -24,6 +31,8 @@ export class Joystick extends Container {
     this.stopAnimation();
     this.downPosition.set(x, y);
     this.position.set(x, y);
+    this.isActivated = true;
+    this.updateAlpha();
   }
 
   public onMove(x: number, y: number): void {
@@ -64,25 +73,27 @@ export class Joystick extends Container {
   }
 
   public init(): void {
+    this.eventMode = 'none';
     this.initBg();
     this.initThumb();
+    this.updateAlpha();
   }
 
   protected initBg(): void {
-    const bg = new Sprite();
+    const bg = new Sprite(Assets.cache.get("joystick:bg"));
     this.bg = bg;
     this.addChild(bg);
     bg.anchor.set(0.5);
   }
 
   protected initThumb(): void {
-    const thumb = new Sprite();
-    this.bg = thumb;
+    const thumb = new Sprite(Assets.cache.get("joystick:thumb"));
+    this.thumb = thumb;
     this.addChild(thumb);
     thumb.anchor.set(0.5);
   }
 
-  public animateRelease() {
+  protected animateRelease() {
     const defaultPos = this.defaultPosition;
 
     const tween = new Tween(this.position)
@@ -96,7 +107,7 @@ export class Joystick extends Container {
     this.releaseTween = tween;
   }
 
-  public stopAnimation() {
+  protected stopAnimation() {
     const tween = this.releaseTween;
 
     if (tween !== null) {
@@ -104,5 +115,9 @@ export class Joystick extends Container {
 
       tween.stop();
     }
+  }
+
+  protected updateAlpha(): void {
+    this.alpha = this.isActivated ? 0.1 : 0.4;
   }
 }

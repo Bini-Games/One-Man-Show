@@ -1,3 +1,3 @@
 export enum ObstacleType {
-  Wall = 'Wall',
+  Wall = "Wall",
 }

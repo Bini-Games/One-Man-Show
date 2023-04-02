@@ -33,7 +33,7 @@ export class AgentController {
 
   protected initAgent(): void {
     const options: RL.IOptions = {
-      update: 'qlearn', // qlearn | sarsa
+      update: "qlearn", // qlearn | sarsa
       gamma: 0.9, // discount factor, [0, 1)
       epsilon: 0.2, // initial epsilon for epsilon-greedy policy, [0, 1)
       alpha: 0.01, // value function learning rate

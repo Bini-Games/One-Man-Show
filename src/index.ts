@@ -3,10 +3,16 @@ import { Application } from "pixi.js";
 import { Game } from "./core/facade/game";
 import { Logger } from "./core/facade/logger";
 import { EventBus } from "./core/facade/event-bus";
+import { Layout } from "./core/screen/layout";
 import { World } from "./game/model/world";
 import { Timer } from "eventemitter3-timer";
 import { WorldView } from "./game/view/world-view";
 import { LearningController } from "./game/controller/ml/learning-controller";
+import { Preloader } from "./core/assets/preloader";
+import { AssetsData } from "./game/data/assets-data";
+import { UI } from "./game/ui/ui";
+import { GameConfig } from "./game/data/game-config";
+import { PlayerController } from "./game/controller/player/player-controller";
 
 const canvas = document.createElement("canvas");
 canvas.id = "game";
@@ -20,11 +26,16 @@ const app = new Application({
   view: canvas,
 });
 
+(<any>window).game = Game;
+
 Game.registerService(Logger.key, new Logger());
 Game.registerService(EventBus.key, new EventBus());
 
 const world = new World();
 Game.registerService(World.key, world);
+
+const layout = new Layout();
+Game.registerService(Layout.key, layout);
 
 const worldView = new WorldView(world);
 Game.registerService(WorldView.key, worldView);
@@ -32,16 +43,47 @@ Game.registerService(WorldView.key, worldView);
 const learningController = new LearningController();
 Game.registerService(LearningController.key, learningController);
 
+const playerController = new PlayerController();
+Game.registerService(PlayerController.key, playerController);
+
 window.onload = load;
 
 function load() {
-  app.ticker.add(tick);
+  new Preloader()
+    .subscribeOnLoaded(onPreloaded)
+    .enqueue(AssetsData)
+    .start();
+}
 
+function onPreloaded() {
+  setupTicker();
+  create();
+}
+
+function setupTicker() {
+  app.ticker.add(tick);
+}
+
+function create() {
   world.init();
   world.reset();
 
   worldView.init();
   app.stage.addChild(worldView.getContainer());
+
+  const ui = new UI();
+  app.stage.addChild(ui);
+  ui.init();
+
+  layout.init({
+    container: ui,
+    renderer: app.renderer,
+    longSide: GameConfig.LayoutLongSide,
+    shortSide: GameConfig.LayoutShortSide,
+  });
+  layout.updateSize();
+
+  playerController.init(world.getParent(), ui.getJoystick());
 
   learningController.init(world);
   learningController.start();
