@@ -64,6 +64,7 @@ export class Target extends MoveableEntity {
   public reset(): void {
     super.reset();
     this.resetPositionToDefault();
+    this.affectCondition(GameConfig.NormalCondition - this.condition);
   }
 
   public getRadius(): number {

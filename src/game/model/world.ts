@@ -167,13 +167,33 @@ export class World extends AbstractService {
     return World.actionsCount;
   }
 
+  public pickNextTarget(): void {
+    const prevTarget = this.currentTarget;
+    const targets = this.targets;
+    const candidates = targets.filter((target) => {
+      return (
+        target !== prevTarget
+        && !target.isBroken()
+      );
+    });
+
+    if (candidates.length) {
+      const newTarget = ArrayUtils.random(candidates);
+      this.currentTarget = newTarget;
+    } else {
+      this.currentTarget = null;
+    }
+
+    Game.events.emit("gameplay:target_changed", this.currentTarget);
+  }
+
   public init(): void {
     this.initPhysics();
     this.initMap();
     this.initChild();
     this.initParent();
     this.initTargets();
-    this.pickRandomTarget();
+    this.pickNextTarget();
     this.listenEvents();
   }
 
@@ -205,26 +225,6 @@ export class World extends AbstractService {
     const targets = this.map.getTargets();
     this.targets = targets;
     targets.forEach(this.setupGameEntity, this);
-  }
-
-  protected pickRandomTarget(): void {
-    const prevTarget = this.currentTarget;
-    const targets = this.targets;
-    const candidates = targets.filter((target) => {
-      return (
-        target !== prevTarget
-        && !target.isBroken()
-      );
-    });
-
-    if (candidates.length) {
-      const newTarget = ArrayUtils.random(candidates);
-      this.currentTarget = newTarget;
-    } else {
-      this.currentTarget = null;
-    }
-
-    Game.events.emit("gameplay:target_changed", this.currentTarget);
   }
 
   protected setupGameEntity<EntityType extends GameEntity>(gameEntity: EntityType): EntityType {
@@ -261,6 +261,6 @@ export class World extends AbstractService {
       return;
     }
 
-    this.pickRandomTarget();
+    this.pickNextTarget();
   }
 }

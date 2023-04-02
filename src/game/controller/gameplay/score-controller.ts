@@ -17,10 +17,17 @@ export class ScoreController extends AbstractService {
     return this.score;
   }
 
+  public reset(): void {
+    this.score = 0;
+    this.scoreDelta = 0;
+    this.updateScoreDelta();
+    this.onScoreChanged();
+  }
+
   public init(): void {
     this.world = Game.getService<World>(World.key);
     this.listenEvents();
-    this.updateScoreDelta();
+    this.reset();
   }
 
   protected listenEvents(): void {

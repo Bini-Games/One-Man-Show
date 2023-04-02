@@ -19,6 +19,7 @@ import { requestFullscreen } from "./core/screen/fullscreen";
 import { BotController } from "./game/controller/parent/bot-controller";
 import { ParentController } from "./game/controller/parent/parent-controller";
 import { ScoreController } from "./game/controller/gameplay/score-controller";
+import { GameplayController } from "./game/controller/gameplay/gameplay-controller";
 
 const canvas = document.createElement("canvas");
 canvas.id = GameConfig.CanvasId;
@@ -54,6 +55,9 @@ Game.registerService(ParentController.key, parentController);
 
 const scoreController = new ScoreController();
 Game.registerService(ScoreController.key, scoreController);
+
+const gameplayController = new GameplayController();
+Game.registerService(GameplayController.key, gameplayController);
 
 const camera = new Camera();
 Game.registerService(Camera.key, camera);
@@ -104,9 +108,11 @@ function create() {
   parentController.init();
   scoreController.init();
   learningController.init();
-  learningController.start();
+  gameplayController.init();
 
   layout.updateSize();
+
+  learningController.start();
 
   tick();
 }
