@@ -73,7 +73,7 @@ export class WorldView extends AbstractService {
   }
 
   protected listenEvents(): void {
-    Game.events.addListener("update", this.update, this);
+    Game.events.on("update", this.update, this);
   }
 
   protected update(): void {

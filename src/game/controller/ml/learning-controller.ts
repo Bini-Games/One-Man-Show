@@ -29,7 +29,7 @@ export class LearningController extends AbstractService {
   }
 
   protected listenEvents(): void {
-    Game.events.addListener("fixedUpdate", this.fixedUpdate, this);
+    Game.events.on("fixedUpdate", this.fixedUpdate, this);
   }
 
   protected fixedUpdate(): void {
