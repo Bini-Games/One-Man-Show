@@ -210,9 +210,19 @@ export class World extends AbstractService {
   protected pickRandomTarget(): void {
     const prevTarget = this.currentTarget;
     const targets = this.targets;
-    const candidates = targets.filter((target) => target !== prevTarget);
-    const newTarget = ArrayUtils.random(candidates);
-    this.currentTarget = newTarget;
+    const candidates = targets.filter((target) => {
+      return (
+        target !== prevTarget
+        && !target.isBroken()
+      );
+    });
+
+    if (candidates.length) {
+      const newTarget = ArrayUtils.random(candidates);
+      this.currentTarget = newTarget;
+    } else {
+      this.currentTarget = null;
+    }
   }
 
   protected setupGameEntity<EntityType extends GameEntity>(gameEntity: EntityType): EntityType {
