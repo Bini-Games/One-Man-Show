@@ -45,7 +45,7 @@ export class Map {
     this.createSimpleTarget(worldSize * 0.0, worldSize * 0.3, TargetType.TeddyBear);
     this.createSimpleTarget(worldSize * 0.5, worldSize * 0.0, TargetType.Train);
     this.createSimpleTarget(worldSize * 1.0, worldSize * 0.8, TargetType.Doll);
-    // this.createSimpleTarget(worldSize * 0.3, worldSize * 1.0, TargetType.Ball);
+    this.createSimpleTarget(worldSize * 0.3, worldSize * 1.0, TargetType.Ball);
   }
 
   protected createWall(x: number, y: number, width: number, height: number, angle: number): Obstacle {
