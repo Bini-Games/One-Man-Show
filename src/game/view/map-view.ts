@@ -43,7 +43,7 @@ export class MapView {
   }
 
   protected initBg(): void {
-    const bg = new Sprite(Assets.cache.get('map:room_bg'));
+    const bg = new Sprite(Assets.cache.get("map:room_bg"));
     this.container.addChild(bg);
     bg.anchor.set(0.5, 0.525);
     bg.position.set(GameConfig.WorldViewSize * 0.5);
