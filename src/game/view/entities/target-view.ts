@@ -4,24 +4,29 @@ import { GameConfig } from "../../data/game-config";
 import { AbstractEntityView } from "./entity-view";
 import { TargetType } from "../../model/entities/target-type.enum";
 import { Game } from "../../../core/facade/game";
+import ProgressBar from "../shared/progress-bar";
 
 export class TargetView extends AbstractEntityView<Target> {
   protected debugView: Graphics = null;
   protected view: Sprite = null;
+  protected conditionPb: ProgressBar = null;
 
   public addTo(parent: Container): void {
     parent.addChild(this.debugView);
     parent.addChild(this.view);
+    parent.addChild(this.conditionPb);
   }
 
   protected setViewPosition(x: number, y: number): void {
     this.debugView.position.set(x, y);
     this.view.position.set(x, y);
+    this.conditionPb.position.set(x, y - 50);
   }
 
   public init(): void {
     this.initDebugView();
     this.initView();
+    this.initConditionProgressBar();
     this.listenEvents();
 
     this.debugView.visible = GameConfig.DebugView;
@@ -44,7 +49,15 @@ export class TargetView extends AbstractEntityView<Target> {
     view.scale.set(this.getViewScale());
   }
 
+  protected initConditionProgressBar(): void {
+    const pb = new ProgressBar();
+    this.conditionPb = pb;
+    pb.init();
+    pb.align(0.5);
+  }
+
   protected listenEvents(): void {
+    Game.events.on("gameplay:target_condition_changed", this.onTargetConditionChanged, this);
     Game.events.on("gameplay:target_broken_changed", this.onTargetBrokenStateChanged, this);
   }
 
@@ -91,6 +104,14 @@ export class TargetView extends AbstractEntityView<Target> {
       case TargetType.Ball:
         return 0.125;
     }
+  }
+
+  protected onTargetConditionChanged(target: Target): void {
+    if (this.entity !== target) {
+      return;
+    }
+
+    this.conditionPb.setProgress(target.getCondition() / GameConfig.NormalCondition);
   }
 
   protected onTargetBrokenStateChanged(target: Target): void {

@@ -31,9 +31,11 @@ export class Target extends MoveableEntity {
 
     const broken = this.condition === 0;
     const prevBroken = this.broken;
+    this.broken = broken;
+
+    Game.events.emit("gameplay:target_condition_changed", this);
 
     if (broken !== prevBroken) {
-      this.broken = broken;
       Game.events.emit("gameplay:target_broken_changed", this);
     }
   }
