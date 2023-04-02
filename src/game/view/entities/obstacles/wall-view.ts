@@ -4,17 +4,24 @@ import { AbstractEntityView } from "../entity-view";
 import { GameConfig } from "../../../data/game-config";
 
 export class WallView extends AbstractEntityView<Obstacle> {
-  protected view: Graphics = null;
+  protected debugView: Graphics = null;
 
   public addTo(parent: Container): void {
-    parent.addChild(this.view);
+    parent.addChild(this.debugView);
   }
 
   protected setViewPosition(x: number, y: number): void {
-    this.view.position.set(x, y);
+    this.debugView.position.set(x, y);
   }
 
-  protected initView(): void {
+  public init(): void {
+    this.initDebugView();
+    this.initView();
+
+    this.debugView.visible = GameConfig.DebugView;
+  }
+
+  protected initDebugView(): void {
     const wall = this.entity;
     const view = new Graphics();
     const width = (<any>wall).width * GameConfig.ViewScale;
@@ -22,6 +29,10 @@ export class WallView extends AbstractEntityView<Obstacle> {
     view.beginFill(0x0000ff);
     view.drawRect(width * -0.5, height * -0.5, width, height);
     view.endFill();
-    this.view = view;
+    this.debugView = view;
+  }
+
+  protected initView(): void {
+    // walls' view are provided by the map bg, so no need to draw extra stuff
   }
 }
