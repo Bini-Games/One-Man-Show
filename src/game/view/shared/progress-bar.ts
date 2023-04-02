@@ -1,7 +1,7 @@
 import { Container, Sprite, Texture } from "pixi.js";
 
 export class ProgressBar extends Container {
-  public bgColor: string = "red";
+  public bgColor: string = "grey";
   public fillColor: string = "green";
   public baseWidth: number = 100;
   public baseHeight: number = 20;
