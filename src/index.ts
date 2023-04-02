@@ -12,7 +12,7 @@ import { Preloader } from "./core/assets/preloader";
 import { AssetsData } from "./game/data/assets-data";
 import { UI } from "./game/ui/ui";
 import { GameConfig } from "./game/data/game-config";
-import { PlayerController } from "./game/controller/player/player-controller";
+import { PlayerController } from "./game/controller/parent/player-controller";
 import { UIService } from "./game/ui/ui-service";
 import Camera from "./core/screen/camera";
 import { requestFullscreen } from "./core/screen/fullscreen";
