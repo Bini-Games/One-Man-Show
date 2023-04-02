@@ -6,27 +6,7 @@ export class ArrayUtils {
     Game.logger.fail("Static class.");
   }
 
-  public static fill<T>(value: T, count: number, destination?: T[]): T[] {
-    const result = destination === undefined ? [] : destination;
-
-    for (let i = 0; i < count; ++i) {
-      result.push(value);
-    }
-
-    return result;
-  }
-
-  public static fillClone<T extends ICloneable<T>>(
-    value: T,
-    count: number,
-    destination?: T[]
-  ): T[] {
-    const result = destination === undefined ? [] : destination;
-
-    for (let i = 0; i < count; ++i) {
-      result.push(value.clone());
-    }
-
-    return result;
+  public static random<T>(array: T[]): T {
+    return array[~~(array.length * Math.random())];
   }
 }

@@ -33,6 +33,7 @@ export class GameEntity extends Entity {
       mass: this.getMass(),
       isStatic: this.isStatic(),
       restitution: this.getRestitution(),
+      isSensor: this.isSensor(),
     });
     this.body = body;
     Matter.Body.setVelocity(body, Matter.Vector.create(0, 0));
@@ -47,6 +48,10 @@ export class GameEntity extends Entity {
   }
 
   protected isStatic(): boolean {
+    return false;
+  }
+
+  protected isSensor(): boolean {
     return false;
   }
 

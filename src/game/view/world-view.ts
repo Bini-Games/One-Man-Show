@@ -58,7 +58,7 @@ export class WorldView extends AbstractService {
   }
 
   protected initTargetView(): void {
-    this.targetView = this.setupGameObjectView(new TargetView(this.world.getTarget()));
+    this.targetView = this.setupGameObjectView(new TargetView(this.world.getCurrentTarget()));
   }
 
   protected setupGameObjectView<ViewType extends AbstractEntityView>(view: ViewType): ViewType {

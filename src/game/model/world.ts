@@ -9,6 +9,7 @@ import { GameConfig } from "../data/game-config";
 import { Vector2, Vector2Pool } from "../../core/math/vector2";
 import { Map } from "./map";
 import { Game } from "../../core/facade/game";
+import { ArrayUtils } from "../../core/utils/array-utils";
 
 export class World extends AbstractService {
   public static readonly key: string = "World";
@@ -22,7 +23,8 @@ export class World extends AbstractService {
   protected map: Map = null;
   protected child: Child = null;
   protected parent: Parent = null;
-  protected target: Target = null;
+  protected targets: Target[] = [];
+  protected currentTarget: Target = null;
   protected actionVelocities: Record<ActionType, Vector2> = {
     [ActionType.Left]: new Vector2(-1, 0),
     [ActionType.Right]: new Vector2(1, 0),
@@ -43,8 +45,12 @@ export class World extends AbstractService {
     return this.parent;
   }
 
-  public getTarget(): Target {
-    return this.target;
+  public getCurrentTarget(): Target {
+    return this.currentTarget;
+  }
+
+  public getTargets(): Target[] {
+    return this.targets;
   }
 
   public getMap(): Map {
@@ -61,14 +67,16 @@ export class World extends AbstractService {
     parent.reset();
     parent.setPosition(Math.random() * worldSize, Math.random() * worldSize);
 
-    const target = this.target;
-    target.reset();
-    target.setPosition(Math.random() * worldSize, Math.random() * worldSize);
+    const targets = this.targets;
+
+    for (const target of targets) {
+      target.reset();
+    }
   }
 
   public getState(): number[] {
     const child = this.child;
-    const target = this.target;
+    const target = this.currentTarget;
     const parent = this.parent;
 
     const childPosition = child.getPosition();
@@ -112,7 +120,7 @@ export class World extends AbstractService {
 
   public getReward(): number {
     const child = this.child;
-    const target = this.target;
+    const target = this.currentTarget;
     const parent = this.parent;
 
     const childPosition = child.getPosition();
@@ -164,7 +172,8 @@ export class World extends AbstractService {
     this.initMap();
     this.initChild();
     this.initParent();
-    this.initTarget();
+    this.initTargets();
+    this.pickRandomTarget();
     this.listenEvents();
   }
 
@@ -179,7 +188,7 @@ export class World extends AbstractService {
   }
 
   protected initMap(): void {
-    const map = new Map(this, this.physicsWorld);
+    const map = new Map(this.physicsWorld);
     this.map = map;
     map.init();
   }
@@ -192,8 +201,18 @@ export class World extends AbstractService {
     this.parent = this.setupGameEntity(new Parent());
   }
 
-  protected initTarget(): void {
-    this.target = this.setupGameEntity(new Target());
+  protected initTargets(): void {
+    const targets = this.map.getTargets();
+    this.targets = targets;
+    targets.forEach(this.setupGameEntity, this);
+  }
+
+  protected pickRandomTarget(): void {
+    const prevTarget = this.currentTarget;
+    const targets = this.targets;
+    const candidates = targets.filter((target) => target !== prevTarget);
+    const newTarget = ArrayUtils.random(candidates);
+    this.currentTarget = newTarget;
   }
 
   protected setupGameEntity<EntityType extends GameEntity>(gameEntity: EntityType): EntityType {
@@ -209,7 +228,13 @@ export class World extends AbstractService {
   protected fixedUpdate() {
     this.child.update();
     this.parent.update();
-    this.target.update();
+
+    const targets = this.targets;
+
+    for (const target of targets) {
+      target.update();
+    }
+
     Matter.Engine.update(this.physicsEngine, World.physicsTimeStep);
   }
 }

@@ -2,13 +2,19 @@ import { Assets, Container, Sprite } from "pixi.js";
 import { Map } from "../model/map";
 import { WallView } from "./entities/obstacles/wall-view";
 import { GameConfig } from "../data/game-config";
+import { ObstacleType } from "../model/entities/obstacles/obstacle-type.enum";
+import { AbstractEntityView } from "./entities/entity-view";
+import { Wall } from "../model/entities/obstacles/wall";
+import { Obstacle } from "../model/entities/obstacles/obstacle";
+
+type ObstacleView = AbstractEntityView<Obstacle>;
 
 export class MapView {
   protected container: Container = null;
 
   protected map: Map = null;
 
-  protected obstaclesViews: WallView[] = [];
+  protected obstaclesViews: ObstacleView[] = [];
 
   constructor(map: Map) {
     this.map = map;
@@ -48,11 +54,19 @@ export class MapView {
     const obstacles = this.map.getObstacles();
 
     for (const obstacle of obstacles) {
-      this.setupGameObjectView(new WallView(obstacle));
+      let view: ObstacleView;
+
+      switch (obstacle.type) {
+        case ObstacleType.Wall:
+          view = new WallView(obstacle as Wall);
+          break;
+      }
+
+      this.setupGameObjectView(view);
     }
   }
 
-  protected setupGameObjectView(view: WallView): WallView {
+  protected setupGameObjectView(view: ObstacleView): ObstacleView {
     this.obstaclesViews.push(view);
     view.init();
     view.addTo(this.container);

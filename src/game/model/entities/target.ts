@@ -1,12 +1,37 @@
+import { Vector2 } from "../../../core/math/vector2";
 import { GameConfig } from "../../data/game-config";
-import { GameEntity } from "./game-entity";
+import { MoveableEntity } from "./moveable-entity";
+import { TargetType } from "./target-type.enum";
 
-export class Target extends GameEntity {
+export class Target extends MoveableEntity {
+  public readonly type: TargetType;
+  protected defaultPosition: Vector2 = new Vector2();
+
+  constructor(type: TargetType) {
+    super();
+
+    this.type = type;
+  }
+
+  public setDefaultPosition(x: number, y: number): void {
+    this.defaultPosition.set(x, y);
+  }
+
+  public resetPositionToDefault(): void {
+    const defaultPosition = this.defaultPosition;
+    this.setPosition(defaultPosition.x, defaultPosition.y);
+  }
+
+  public reset(): void {
+    super.reset();
+    this.resetPositionToDefault();
+  }
+
   public getRadius(): number {
     return 25 * GameConfig.UnitSize;
   }
 
-  protected isStatic(): boolean {
+  protected isSensor(): boolean {
     return true;
   }
 }
