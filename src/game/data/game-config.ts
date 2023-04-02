@@ -1,5 +1,6 @@
 export const GameConfig = {
   DebugView: true,
+  CanvasId: "game",
   LayoutLongSide: 960,
   LayoutShortSide: 640,
   UnitSize: 1,

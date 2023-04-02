@@ -73,7 +73,7 @@ export class Joystick extends Container {
   }
 
   public init(): void {
-    this.eventMode = 'none';
+    this.eventMode = "none";
     this.initBg();
     this.initThumb();
     this.updateAlpha();

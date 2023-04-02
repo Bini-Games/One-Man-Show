@@ -5,7 +5,7 @@ import { Math2 } from "../math/math2";
 import { AbstractService } from "../services/abstract-service";
 
 export default class Camera extends AbstractService {
-  public static readonly key: string = 'Camera';
+  public static readonly key: string = "Camera";
 
   protected container: Container;
 
@@ -72,8 +72,8 @@ export default class Camera extends AbstractService {
   }
 
   protected setupEvents(): void {
-    Game.events.on('update', this.update, this);
-    Game.events.on('resize', this.onResize, this);
+    Game.events.on("update", this.update, this);
+    Game.events.on("resize", this.onResize, this);
   }
 
   protected update(dt: number): void {

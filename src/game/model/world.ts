@@ -203,7 +203,7 @@ export class World extends AbstractService {
   }
 
   protected listenEvents(): void {
-    Game.events.addListener('fixedUpdate', this.fixedUpdate, this);
+    Game.events.addListener("fixedUpdate", this.fixedUpdate, this);
   }
 
   protected fixedUpdate() {

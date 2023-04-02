@@ -22,7 +22,7 @@ export class UI extends Container {
     const overlay = new Sprite(Assets.cache.get("empty"));
     this.overlay = overlay;
     this.addChild(overlay);
-    overlay.eventMode = 'static';
+    overlay.eventMode = "static";
   }
 
   protected initJoystick(): void {
@@ -33,25 +33,31 @@ export class UI extends Container {
   }
 
   protected listenEvents(): void {
-    Game.events.on('resize', this.onResize, this);
+    Game.events.on("resize", this.onResize, this);
 
     const overlay = this.overlay;
-    overlay.on('pointerdown', this.onPointerDown, this);
-    overlay.on('pointerup', this.onPointerUp, this);
-    overlay.on('pointermove', this.onPointerMove, this);
+    overlay.on("pointerdown", this.onPointerDown, this);
+    overlay.on("pointerup", this.onPointerUp, this);
+    overlay.on("pointermove", this.onPointerMove, this);
   }
 
   protected onPointerDown(event: FederatedPointerEvent): void {
+    Game.events.emit("pointerdown", event);
+
     const { x, y} = this.toLocal(event.global);
     this.isJoystickDown = true;
     this.joystick.onStarted(x, y);
   }
 
   protected onPointerUp(event: FederatedPointerEvent): void {
+    Game.events.emit("pointerup", event);
+
     this.releaseJoystick();
   }
 
   protected onPointerMove(event: FederatedPointerEvent): void {
+    Game.events.emit("pointermove", event);
+
     if (this.isJoystickDown) {
       const { x, y} = this.toLocal(event.global);
       this.joystick.onMove(x, y);

@@ -30,8 +30,8 @@ export class PlayerController extends AbstractService {
 
   protected listenEvents(): void {
     this.joystick.onChanged.connect(this.onJoystickChanged.bind(this));
-    Game.events.on('update', this.update, this);
-    Game.events.on('resize', this.onResize, this);
+    Game.events.on("update", this.update, this);
+    Game.events.on("resize", this.onResize, this);
   }
 
   protected onJoystickChanged(x: number, y: number): void {

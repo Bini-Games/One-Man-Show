@@ -159,7 +159,7 @@ export class Layout extends AbstractService {
     container.scale.set(scaleInv);
 
     this.onResize.emit();
-    Game.events.emit('resize');
+    Game.events.emit("resize");
   }
 
   public reset(): void {

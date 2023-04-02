@@ -34,7 +34,7 @@ export class ChildView extends AbstractEntityView<Child> {
   }
 
   protected initView(): void {
-    const view = new Sprite(Assets.cache.get('character:daughter'));
+    const view = new Sprite(Assets.cache.get("character:daughter"));
     this.view = view;
     view.anchor.set(0.5, 0.6);
     view.scale.set(0.07);

@@ -15,9 +15,10 @@ import { GameConfig } from "./game/data/game-config";
 import { PlayerController } from "./game/controller/player/player-controller";
 import { UIService } from "./game/ui/ui-service";
 import Camera from "./core/screen/camera";
+import { requestFullscreen } from "./core/screen/fullscreen";
 
 const canvas = document.createElement("canvas");
-canvas.id = "game";
+canvas.id = GameConfig.CanvasId;
 document.body.appendChild(canvas);
 
 const app = new Application({
@@ -92,6 +93,8 @@ function create() {
   camera.init();
   camera.setContainer(worldView.getContainer());
 
+  Game.events.once("pointerdown", () => requestFullscreen());
+
   playerController.init();
   learningController.init();
   learningController.start();
@@ -114,11 +117,11 @@ function tick() {
   const dt = World.timeStep;
 
   while (accumulated >= dt) {
-    Game.events.emit('fixedUpdate');
+    Game.events.emit("fixedUpdate");
     accumulated -= dt;
   }
 
-  Game.events.emit('update', frameTime);
+  Game.events.emit("update", frameTime);
 
   app.renderer.render(app.stage);
 }
