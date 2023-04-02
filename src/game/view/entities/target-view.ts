@@ -4,7 +4,8 @@ import { GameConfig } from "../../data/game-config";
 import { AbstractEntityView } from "./entity-view";
 import { TargetType } from "../../model/entities/target-type.enum";
 import { Game } from "../../../core/facade/game";
-import ProgressBar from "../shared/progress-bar";
+import { ProgressBar } from "../shared/progress-bar";
+import { World } from "../../model/world";
 
 export class TargetView extends AbstractEntityView<Target> {
   protected debugView: Graphics = null;
@@ -28,6 +29,7 @@ export class TargetView extends AbstractEntityView<Target> {
     this.initView();
     this.initConditionProgressBar();
     this.listenEvents();
+    this.onTargetChanged(Game.getService<World>(World.key).getCurrentTarget());
 
     this.debugView.visible = GameConfig.DebugView;
   }
@@ -57,6 +59,7 @@ export class TargetView extends AbstractEntityView<Target> {
   }
 
   protected listenEvents(): void {
+    Game.events.on("gameplay:target_changed", this.onTargetChanged, this);
     Game.events.on("gameplay:target_condition_changed", this.onTargetConditionChanged, this);
     Game.events.on("gameplay:target_broken_changed", this.onTargetBrokenStateChanged, this);
   }
@@ -104,6 +107,10 @@ export class TargetView extends AbstractEntityView<Target> {
       case TargetType.Ball:
         return 0.125;
     }
+  }
+
+  protected onTargetChanged(target: Target): void {
+    this.debugView.alpha = this.entity === target ? 1 : 0.5;
   }
 
   protected onTargetConditionChanged(target: Target): void {

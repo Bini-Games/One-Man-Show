@@ -223,6 +223,8 @@ export class World extends AbstractService {
     } else {
       this.currentTarget = null;
     }
+
+    Game.events.emit("gameplay:target_changed", this.currentTarget);
   }
 
   protected setupGameEntity<EntityType extends GameEntity>(gameEntity: EntityType): EntityType {
