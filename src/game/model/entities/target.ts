@@ -5,4 +5,8 @@ export class Target extends GameEntity {
   public getRadius(): number {
     return 25 * GameConfig.UnitSize;
   }
+
+  protected isStatic(): boolean {
+    return true;
+  }
 }
