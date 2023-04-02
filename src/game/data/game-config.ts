@@ -8,7 +8,7 @@ export const GameConfig = {
   WorldSize: 500,
   WorldViewSize: 700,
   ViewScale: -1, // will be calculated below
-  ChildSpeed: 2,
+  ChildSpeed: 4,
   ParentSpeed: 1,
   TicksPerAction: 10,
 };
