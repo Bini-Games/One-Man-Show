@@ -11,4 +11,5 @@ export const AssetsData: Record<string, string> = {
   "map:train:broken": "assets/img/gameplay/map/targets/train_broken.png",
   "map:doll:ok": "assets/img/gameplay/map/targets/doll_ok.png",
   "map:doll:broken": "assets/img/gameplay/map/targets/doll_broken.png",
+  "map:ball:ok": "assets/img/gameplay/map/targets/ball_ok.png",
 };
