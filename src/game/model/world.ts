@@ -167,6 +167,14 @@ export class World extends AbstractService {
     return World.actionsCount;
   }
 
+  public resetTargets(): void {
+    const targets = this.targets;
+
+    for (const target of targets) {
+      target.reset();
+    }
+  }
+
   public pickNextTarget(): void {
     const prevTarget = this.currentTarget;
     const targets = this.targets;

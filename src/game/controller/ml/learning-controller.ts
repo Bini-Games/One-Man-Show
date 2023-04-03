@@ -7,14 +7,22 @@ export class LearningController extends AbstractService {
   public static readonly key: string = "LearningController";
 
   protected agentController: AgentController = null;
-  protected ticksTillAction: number = GameConfig.TicksPerAction;
+  protected ticksTillAction: number = Infinity;
+  protected learning: boolean = false;
 
   constructor() {
     super(LearningController.key);
   }
 
   public start(): void {
+    this.learning = true;
+    this.ticksTillAction = GameConfig.TicksPerAction;
     this.act();
+  }
+
+  public stop(): void {
+    this.learning = false;
+    this.ticksTillAction = Infinity;
   }
 
   public init(): void {

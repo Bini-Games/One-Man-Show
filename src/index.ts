@@ -107,12 +107,11 @@ function create() {
 
   parentController.init();
   scoreController.init();
-  learningController.init();
   gameplayController.init();
 
   layout.updateSize();
 
-  learningController.start();
+  gameplayController.start();
 
   tick();
 }

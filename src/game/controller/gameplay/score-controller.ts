@@ -1,6 +1,7 @@
 import { AbstractService } from "../../../core/services/abstract-service";
 import { Game } from "../../../core/facade/game";
 import { World } from "../../model/world";
+import { GameplayController } from "./gameplay-controller";
 
 export class ScoreController extends AbstractService {
   public static readonly key: string = "ScoreController";
@@ -8,6 +9,7 @@ export class ScoreController extends AbstractService {
   protected score: number = 0;
   protected scoreDelta: number = 0;
   protected world: World;
+  protected gameplayController: GameplayController;
 
   constructor() {
     super(ScoreController.key);
@@ -26,12 +28,14 @@ export class ScoreController extends AbstractService {
 
   public init(): void {
     this.world = Game.getService<World>(World.key);
+    this.gameplayController = Game.getService<GameplayController>(GameplayController.key);
     this.listenEvents();
     this.reset();
   }
 
   protected listenEvents(): void {
     Game.events.on("gameplay:target_broken_changed", this.onTargetBrokenStateChanged, this);
+    Game.events.on("gameplay:end", this.onGameplayEnded, this);
     Game.events.on("fixedUpdate", this.fixedUpdate, this);
   }
 
@@ -39,7 +43,15 @@ export class ScoreController extends AbstractService {
     this.updateScoreDelta();
   }
 
+  protected onGameplayEnded(): void {
+    this.scoreDelta = 0;
+  }
+
   protected updateScoreDelta(): void {
+    if (this.gameplayController.hasEnded()) {
+      return;
+    }
+
     let scoreDelta = 0;
     const targets = this.world.getTargets();
 
