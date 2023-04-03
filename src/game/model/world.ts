@@ -10,6 +10,7 @@ import { Vector2, Vector2Pool } from "../../core/math/vector2";
 import { Map } from "./map";
 import { Game } from "../../core/facade/game";
 import { ArrayUtils } from "../../core/utils/array-utils";
+import { TimerManager } from "eventemitter3-timer";
 
 export class World extends AbstractService {
   public static readonly key: string = "World";
@@ -17,6 +18,8 @@ export class World extends AbstractService {
   public static readonly physicsTimeStep: number = World.timeStep * 1000;
   public static readonly statesCount: number = 8;
   public static readonly actionsCount: number = 5; // move left, right, up, down, or stand
+
+  public readonly fixedTimers: TimerManager = new TimerManager();
 
   protected physicsEngine: Matter.Engine = null;
   protected physicsWorld: Matter.World = null;
@@ -248,6 +251,8 @@ export class World extends AbstractService {
   }
 
   protected fixedUpdate() {
+    this.fixedTimers.update(World.physicsTimeStep);
+
     const child = this.child;
     const parent = this.parent;
     const targets = this.targets;

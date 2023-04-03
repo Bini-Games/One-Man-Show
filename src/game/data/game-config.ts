@@ -17,7 +17,7 @@ export const GameConfig = {
   RoundTime: 60,
   CatchDistance: 10,
   MoveAwaySpeedMin: 3,
-  MoveAwaySpeedMax: 7,
+  MoveAwaySpeedMax: 15,
 };
 
 GameConfig.ViewScale = GameConfig.WorldViewSize / GameConfig.WorldSize;

@@ -5,7 +5,6 @@ import { GameConfig } from "../../data/game-config";
 import { ScoreController } from "./score-controller";
 import { LearningController } from "../ml/learning-controller";
 import { TimerController } from "./timer-controller";
-import { Timer } from "eventemitter3-timer";
 import { Math2 } from "../../../core/math/math2";
 
 export enum EndReason {
@@ -92,13 +91,14 @@ export class GameplayController extends AbstractService {
     this.catchActive = true;
     Game.events.emit('gameplay:catch');
 
-    new Timer(250)
-      .start()
-      .on("end", this.moveCatcherAway, this);
+    this.delay(250, this.moveCatcherAway, this);
+    this.delay(500, this.stopCatch, this);
+  }
 
-    new Timer(500)
-      .start()
-      .on("end", this.stopCatch, this);
+  protected delay(time: number, fn: any, ctx?: any): void {
+    const timer = this.world.fixedTimers.createTimer(time);
+    timer.on("end", fn, ctx);
+    timer.start();
   }
 
   protected moveCatcherAway(): void {
