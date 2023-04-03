@@ -113,7 +113,6 @@ export class GameplayController extends AbstractService {
           .getPosition()
       )
       .setLength(this.moveAwaySpeed);
-      console.log(this.moveAwaySpeed);
       
     parent.setVelocity(velocityAway.x, velocityAway.y);
     this.moveAwaySpeed = Math2.lerp(GameConfig.MoveAwaySpeedMin, this.moveAwaySpeed, 0.9);

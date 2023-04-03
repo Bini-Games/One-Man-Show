@@ -35,6 +35,7 @@ const app = new Application({
 });
 
 (<any>window).game = Game;
+(<any>window).gameConfig = GameConfig;
 
 Game.registerService(Logger.key, new Logger());
 Game.registerService(EventBus.key, new EventBus());
