@@ -45,7 +45,7 @@ export class ScoreController extends AbstractService {
   }
 
   protected onCatch(): void {
-    this.score += 100;
+    this.score += 20;
   }
 
   protected onGameplayEnded(): void {
