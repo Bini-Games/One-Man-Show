@@ -4,7 +4,8 @@ import { Game } from "../../core/facade/game";
 import { Math2 } from "../../core/math/math2";
 import { GameConfig } from "../data/game-config";
 import { ScoreCounter } from "./score/score-counter";
-import { ResultScreen } from "./result-screen/result-screen";
+import { ResultScreen, ResultScreenType } from "./result-screen/result-screen";
+import { EndReason } from "../controller/gameplay/gameplay-controller";
 
 export class UI extends Container {
   protected overlay: Sprite = null;
@@ -57,6 +58,7 @@ export class UI extends Container {
 
   protected listenEvents(): void {
     Game.events.on("resize", this.onResize, this);
+    Game.events.on("gameplay:end", this.onGameplayEnded, this);
 
     const overlay = this.overlay;
     overlay.on("pointerdown", this.onPointerDown, this);
@@ -94,6 +96,10 @@ export class UI extends Container {
   protected releaseJoystick(): void {
     this.resetJoystickState();
     this.joystick.release();
+  }
+
+  protected onGameplayEnded(reason: EndReason): void {
+    this.resultScreen.show(reason === EndReason.AllTargetsBroken ? ResultScreenType.Sad : ResultScreenType.Happy);
   }
 
   protected onResize(): void {

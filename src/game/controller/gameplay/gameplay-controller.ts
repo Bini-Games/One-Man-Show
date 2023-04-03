@@ -5,6 +5,11 @@ import { GameConfig } from "../../data/game-config";
 import { ScoreController } from "./score-controller";
 import { LearningController } from "../ml/learning-controller";
 
+export enum EndReason {
+  AllTargetsBroken = "AllTargetsBroken",
+  TimedOut = "TimedOut",
+}
+
 export class GameplayController extends AbstractService {
   public static readonly key: string = "GameplayController";
 
@@ -12,6 +17,7 @@ export class GameplayController extends AbstractService {
   protected scoreController: ScoreController = null;
   protected learningController: LearningController = null;
   protected ended: boolean = false;
+  protected endReason: EndReason = null;
 
   constructor() {
     super(GameplayController.key);
@@ -19,6 +25,10 @@ export class GameplayController extends AbstractService {
 
   public hasEnded(): boolean {
     return this.ended;
+  }
+
+  public getEndReason(): EndReason {
+    return this.endReason;
   }
 
   public init(): void {
@@ -54,13 +64,14 @@ export class GameplayController extends AbstractService {
       world.pickNextTarget();
       this.scoreController.reset();
     } else {
-      this.endGameplay();
+      this.endGameplay(EndReason.AllTargetsBroken);
     }
   }
 
-  protected endGameplay(): void {
+  protected endGameplay(reason: EndReason): void {
     this.ended = true;
+    this.endReason = reason;
     this.learningController.stop();
-    Game.events.emit("gameplay:end");
+    Game.events.emit("gameplay:end", reason);
   }
 }

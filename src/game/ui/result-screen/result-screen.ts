@@ -1,6 +1,14 @@
-import { Assets, Container, Sprite, Text, Texture } from "pixi.js";
+import { Assets, Container, DisplayObject, ObservablePoint, Sprite, Text, Texture } from "pixi.js";
 import { Game } from "../../../core/facade/game";
 import { Math2 } from "../../../core/math/math2";
+import { ScoreController } from "../../controller/gameplay/score-controller";
+import { Easing, Tween } from "@tweenjs/tween.js";
+import { Timer } from "eventemitter3-timer";
+
+export enum ResultScreenType {
+  Happy = "Happy",
+  Sad = "Sad",
+}
 
 export class ResultScreen extends Container {
   protected bg: Sprite = null;
@@ -9,8 +17,30 @@ export class ResultScreen extends Container {
   protected resultText: Text = null;
   protected restartButton: Sprite = null;
 
+  public show(type: ResultScreenType): void {
+    const score = Game.getService<ScoreController>(ScoreController.key).getScore();
+    this.scoreText.text = `SCORE: ${~~score}`;
+
+    switch (type) {
+      case ResultScreenType.Happy:
+        this.character.texture = Assets.cache.get("result_screen:child_happy");
+        this.resultText.text = "YOUR CHILD\nIS HAPPY!";
+        break;
+      case ResultScreenType.Sad:
+        this.character.texture = Assets.cache.get("result_screen:child_sad");
+        this.resultText.text = "YOUR CHILD\nIS SAD...";
+        break;
+    }
+
+    this.showFade(this).onComplete(() => {
+      this.showScale(this.character).onComplete(() => {
+        this.showScale(this.restartButton);
+      });
+    });
+  }
+
   public init(): void {
-    // this.visible = false;
+    this.visible = false;
     this.initBg();
     this.initCharacter();
     this.initScoreText();
@@ -31,11 +61,12 @@ export class ResultScreen extends Container {
     const character = new Sprite(Assets.cache.get("result_screen:child_sad"));
     this.character = character;
     this.addChild(character);
+    character.visible = false;
     character.anchor.set(0.5);
   }
 
   protected initScoreText(): void {
-    const scoreText = new Text("SCORE: -9999", {
+    const scoreText = new Text("", {
       align: "center",
       fontFamily: "Arial",
       fontWeight: "bold",
@@ -50,7 +81,7 @@ export class ResultScreen extends Container {
   }
 
   protected initResultText(): void {
-    const resultText = new Text("YOUR CHILD\nIS SAD...", {
+    const resultText = new Text("", {
       align: "center",
       fontFamily: "Arial",
       fontWeight: "bold",
@@ -68,11 +99,16 @@ export class ResultScreen extends Container {
     const restartButton = new Sprite(Assets.cache.get("result_screen:button_restart"));
     this.restartButton = restartButton;
     this.addChild(restartButton);
+    restartButton.visible = false;
     restartButton.anchor.set(0.5);
+    restartButton.eventMode = "static";
   }
 
   protected listenEvents(): void {
     Game.events.on("resize", this.onResize, this);
+    this.restartButton.on('pointerdown', this.onRestartButtonDown, this);
+    this.restartButton.on('pointerup', this.onRestartButtonUp, this);
+    this.restartButton.on('pointerupoutside', this.onRestartButtonUp, this);
   }
 
   protected onResize(): void {
@@ -122,5 +158,54 @@ export class ResultScreen extends Container {
       const buttonTop = restartButton.y - restartButton.height * 0.5;
       resultText.position.set(restartButton.x, Math2.lerp(scoreText.y, buttonTop, 0.6));
     }
+  }
+
+  protected showFade(object: DisplayObject): Tween<DisplayObject> {
+    object.visible = true;
+
+    object.alpha = 0;
+
+    const tween = new Tween(object);
+    tween
+      .to({
+        alpha: 1,
+      }, 500)
+      .easing(Easing.Sinusoidal.Out)
+      .start();
+    return tween;
+  }
+
+  protected showScale(object: DisplayObject): Tween<ObservablePoint> {
+    object.visible = true;
+
+    const targetScaleX = object.scale.x;
+    const targetScaleY = object.scale.y;
+
+    object.scale.set(0);
+
+    const tween = new Tween(object.scale);
+    tween
+      .to({
+        x: targetScaleX,
+        y: targetScaleY,
+      }, 500)
+      .easing(Easing.Back.Out)
+      .start();
+    return tween;
+  }
+
+  protected onRestartButtonDown(): void {
+    const button = this.restartButton;
+    button.scale.set(button.scale.x * 0.9);
+  }
+
+  protected onRestartButtonUp(): void {
+    this.onResize(); // reset scales
+
+    new Timer(0.2)
+      .start()
+      .on('end', () => {
+        window.location.reload(); // restart game by reloading window - bad idea, but it's fast :)
+      });
   }
 }
