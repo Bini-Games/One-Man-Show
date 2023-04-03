@@ -35,12 +35,17 @@ export class ScoreController extends AbstractService {
 
   protected listenEvents(): void {
     Game.events.on("gameplay:target_broken_changed", this.onTargetBrokenStateChanged, this);
+    Game.events.on("gameplay:catch", this.onCatch, this);
     Game.events.on("gameplay:end", this.onGameplayEnded, this);
     Game.events.on("fixedUpdate", this.fixedUpdate, this);
   }
 
   protected onTargetBrokenStateChanged(): void {
     this.updateScoreDelta();
+  }
+
+  protected onCatch(): void {
+    this.score += 100;
   }
 
   protected onGameplayEnded(): void {
