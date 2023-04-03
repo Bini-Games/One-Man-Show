@@ -24,6 +24,7 @@ export class ChildView extends AbstractEntityView<Child> {
     this.initDebugView();
     this.initShadow();
     this.initView();
+    this.initAnimator(this.view);
 
     this.debugView.visible = GameConfig.DebugView;
   }

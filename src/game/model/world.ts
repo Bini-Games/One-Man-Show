@@ -118,7 +118,11 @@ export class World extends AbstractService {
   public doAction(action: ActionType): void {
     const velocity = this.actionVelocities[action];
     const speed = GameConfig.ChildSpeed;
-    this.child.setVelocity(velocity.x * speed, velocity.y * speed);
+    const vx = velocity.x * speed;
+    const vy = velocity.y * speed;
+    const child = this.child;
+    child.setVelocity(vx, vy);
+    Game.events.emit("gameplay:conscious_movement", child, vx, vy);
   }
 
   public getReward(): number {

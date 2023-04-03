@@ -38,11 +38,12 @@ export class PlayerController extends ParentController {
       }
 
       const speed = GameConfig.ParentSpeed;
-
       const vx = x * speed;
       const vy = y * speed;
+      const parent = this.parent;
 
-      this.parent.setVelocity(vx, vy);
+      parent.setVelocity(vx, vy);
+      Game.events.emit("gameplay:conscious_movement", parent, vx, vy);
 
       this.isMoving = true;
     }

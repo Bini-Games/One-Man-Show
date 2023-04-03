@@ -28,6 +28,7 @@ export class ParentView extends AbstractEntityView<Parent> {
     this.initDebugView();
     this.initShadow();
     this.initView();
+    this.initAnimator(this.view);
 
     this.dangerZoneView.visible = GameConfig.DebugView;
     this.debugView.visible = GameConfig.DebugView;

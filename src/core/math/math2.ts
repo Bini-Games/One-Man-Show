@@ -25,6 +25,10 @@ export class Math2 {
     return value < 0 ? -value : value;
   }
 
+  public static sign(value: number): number {
+    return value < 0 ? -1 : 1;
+  }
+
   public static min(a: number, b: number): number {
     return a < b ? a : b;
   }

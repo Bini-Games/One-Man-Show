@@ -1,9 +1,11 @@
-import { Container, Graphics } from "pixi.js";
+import { Container, DisplayObject, Graphics } from "pixi.js";
 import { GameConfig } from "../../data/game-config";
 import { GameEntity } from "../../model/entities/game-entity";
+import { EntityAnimator } from "../shared/entity-animator";
 
 export abstract class AbstractEntityView<EntityType extends GameEntity = GameEntity> {
   protected entity: EntityType = null;
+  protected animator: EntityAnimator = null;
 
   constructor(entity: EntityType) {
     this.entity = entity;
@@ -36,5 +38,11 @@ export abstract class AbstractEntityView<EntityType extends GameEntity = GameEnt
     shadow.endFill();
     shadow.cacheAsBitmap = true;
     return shadow;
+  }
+
+  protected initAnimator(view: DisplayObject): void {
+    const animator = new EntityAnimator(this.entity, view);
+    this.animator = animator;
+    animator.init();
   }
 }
