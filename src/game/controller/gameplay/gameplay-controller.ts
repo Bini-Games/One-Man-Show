@@ -5,6 +5,7 @@ import { GameConfig } from "../../data/game-config";
 import { ScoreController } from "./score-controller";
 import { LearningController } from "../ml/learning-controller";
 import { TimerController } from "./timer-controller";
+import { Timer } from "eventemitter3-timer";
 
 export enum EndReason {
   AllTargetsBroken = "AllTargetsBroken",
@@ -20,6 +21,7 @@ export class GameplayController extends AbstractService {
   protected learningController: LearningController = null;
   protected ended: boolean = false;
   protected endReason: EndReason = null;
+  protected catchActive: boolean = false;
 
   constructor() {
     super(GameplayController.key);
@@ -53,6 +55,7 @@ export class GameplayController extends AbstractService {
   protected listenEvents(): void {
     Game.events.on("gameplay:target_changed", this.onTargetChanged, this);
     Game.events.on("gameplay:timer_ended", this.onTimerEnded, this);
+    Game.events.on("gameplay:catch_available", this.onCatchAvailable, this);
   }
 
   protected onTargetChanged(): void {
@@ -65,6 +68,17 @@ export class GameplayController extends AbstractService {
 
   protected onTimerEnded(): void {
     this.endGameplay(EndReason.TimedOut);
+  }
+
+  protected onCatchAvailable(): void {
+    this.catchActive = true;
+    Game.events.emit('gameplay:catch');
+    new Timer(0.25)
+      .start()
+      .on("end", this.moveCatcherAway, this);
+  }
+
+  protected moveCatcherAway(): void {
   }
 
   protected handleNoTarget(): void {

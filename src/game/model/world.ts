@@ -262,6 +262,10 @@ export class World extends AbstractService {
 
     child.affectTargets(targets);
     parent.affectTargets(targets);
+
+    if (parent.canCatch(child)) {
+      Game.events.emit("gameplay:catch_available");
+    }
   }
 
   protected onTargetBroken(target: Target): void {
