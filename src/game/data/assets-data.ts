@@ -12,6 +12,7 @@ export const AssetsData: Record<string, string> = {
   "map:doll:ok": "assets/img/gameplay/map/targets/doll_ok.png",
   "map:doll:broken": "assets/img/gameplay/map/targets/doll_broken.png",
   "map:ball:ok": "assets/img/gameplay/map/targets/ball_ok.png",
+  "effects:heart": "assets/img/gameplay/effects/heart.png",
   "result_screen:child_sad": "assets/img/ui/result/child_sad.png",
   "result_screen:child_happy": "assets/img/ui/result/child_happy.png",
   "result_screen:button_restart": "assets/img/ui/result/button_restart.png",

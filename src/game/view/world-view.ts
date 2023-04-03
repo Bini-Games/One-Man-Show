@@ -7,6 +7,7 @@ import { AbstractService } from "../../core/services/abstract-service";
 import { World } from "../model/world";
 import { MapView } from "./map-view";
 import { Game } from "../../core/facade/game";
+import { Hearts } from "./effects/hearts";
 
 export class WorldView extends AbstractService {
   public static readonly key: string = "WorldView";
@@ -19,6 +20,7 @@ export class WorldView extends AbstractService {
   protected childView: ChildView = null;
   protected parentView: ParentView = null;
   protected targetsViews: TargetView[] = [];
+  protected heartsEffect: Hearts = null;
 
   constructor() {
     super(WorldView.key);
@@ -35,6 +37,7 @@ export class WorldView extends AbstractService {
     this.initChildView();
     this.initParentView();
     this.initTargetsViews();
+    this.initHeartsEffect();
     this.listenEvents();
   }
 
@@ -66,6 +69,11 @@ export class WorldView extends AbstractService {
     }
   }
 
+  protected initHeartsEffect(): void {
+    this.heartsEffect = new Hearts(this.container);
+    this.heartsEffect.init();
+  }
+
   protected setupGameObjectView<ViewType extends AbstractEntityView>(view: ViewType): ViewType {
     view.init();
     view.addTo(this.container);
@@ -74,6 +82,7 @@ export class WorldView extends AbstractService {
 
   protected listenEvents(): void {
     Game.events.on("update", this.update, this);
+    Game.events.on("gameplay:catch", this.onCatch, this);
   }
 
   protected update(): void {
@@ -86,5 +95,11 @@ export class WorldView extends AbstractService {
     for (const targetView of targetsViews) {
       targetView.update();
     }
+  }
+
+  protected onCatch(): void {
+    const child = this.world.getChild();
+    const position = child.getPosition();
+    this.heartsEffect.emitAt(position.x, position.y);
   }
 }
