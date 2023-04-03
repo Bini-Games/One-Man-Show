@@ -5,20 +5,24 @@ import { AbstractEntityView } from "./entity-view";
 
 export class ChildView extends AbstractEntityView<Child> {
   protected debugView: Graphics = null;
+  protected shadow: Graphics = null;
   protected view: Sprite = null;
 
   public addTo(parent: Container): void {
     parent.addChild(this.debugView);
+    parent.addChild(this.shadow);
     parent.addChild(this.view);
   }
 
   protected setViewPosition(x: number, y: number): void {
     this.debugView.position.set(x, y);
     this.view.position.set(x, y);
+    this.shadow.position.set(x, y + 30);
   }
 
   public init(): void {
     this.initDebugView();
+    this.initShadow();
     this.initView();
 
     this.debugView.visible = GameConfig.DebugView;
@@ -36,6 +40,10 @@ export class ChildView extends AbstractEntityView<Child> {
     view.beginFill(0x0000ff);
     view.drawCircle(0, 0, child.getRadius() * GameConfig.ViewScale);
     view.endFill();
+  }
+
+  protected initShadow(): void {
+    this.shadow = this.createShadow(20, 7);
   }
 
   protected initView(): void {

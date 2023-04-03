@@ -1,4 +1,4 @@
-import { Container } from "pixi.js";
+import { Container, Graphics } from "pixi.js";
 import { GameConfig } from "../../data/game-config";
 import { GameEntity } from "../../model/entities/game-entity";
 
@@ -28,4 +28,13 @@ export abstract class AbstractEntityView<EntityType extends GameEntity = GameEnt
   }
 
   protected abstract setViewPosition(x: number, y: number): void;
+
+  protected createShadow(width: number, height: number): Graphics {
+    const shadow = new Graphics();
+    shadow.beginFill(0x000000, 0.2);
+    shadow.drawEllipse(0, 0, width, height);
+    shadow.endFill();
+    shadow.cacheAsBitmap = true;
+    return shadow;
+  }
 }
