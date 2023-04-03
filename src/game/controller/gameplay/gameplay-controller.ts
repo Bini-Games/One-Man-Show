@@ -67,7 +67,11 @@ export class GameplayController extends AbstractService {
   }
 
   protected onTimerEnded(): void {
-    this.endGameplay(EndReason.TimedOut);
+    if (GameConfig.IsLearning) {
+      this.setupForNewLearningPhase();
+    } else {
+      this.endGameplay(EndReason.TimedOut);
+    }
   }
 
   protected onCatchAvailable(): void {
@@ -83,14 +87,18 @@ export class GameplayController extends AbstractService {
 
   protected handleNoTarget(): void {
     if (GameConfig.IsLearning) {
-      const world = this.world;
-      world.resetTargets();
-      world.pickNextTarget();
-      this.scoreController.reset();
-      this.timerController.reset();
+      this.setupForNewLearningPhase();
     } else {
       this.endGameplay(EndReason.AllTargetsBroken);
     }
+  }
+
+  protected setupForNewLearningPhase(): void {
+    const world = this.world;
+    world.resetTargets();
+    world.pickNextTarget();
+    this.scoreController.reset();
+    this.timerController.reset();
   }
 
   protected endGameplay(reason: EndReason): void {
