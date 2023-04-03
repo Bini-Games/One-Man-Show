@@ -1,10 +1,15 @@
 import { saveAs } from "file-saver";
+import { AbstractService } from "../services/abstract-service";
 
-export class FileManager {
+export class FileManager extends AbstractService {
+  public static readonly key: string = "FileManager";
+
   private input: any = null;
   private callback: any = null;
 
   constructor() {
+    super(FileManager.key);
+
     this.initInput();
   }
   

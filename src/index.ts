@@ -21,6 +21,7 @@ import { ParentController } from "./game/controller/parent/parent-controller";
 import { ScoreController } from "./game/controller/gameplay/score-controller";
 import { GameplayController } from "./game/controller/gameplay/gameplay-controller";
 import { TimerController } from "./game/controller/gameplay/timer-controller";
+import { FileManager } from "./core/utils/file-manager";
 
 const canvas = document.createElement("canvas");
 canvas.id = GameConfig.CanvasId;
@@ -39,6 +40,7 @@ const app = new Application({
 
 Game.registerService(Logger.key, new Logger());
 Game.registerService(EventBus.key, new EventBus());
+Game.registerService(FileManager.key, new FileManager());
 
 const world = new World();
 Game.registerService(World.key, world);

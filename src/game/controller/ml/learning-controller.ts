@@ -1,5 +1,6 @@
 import { Game } from "../../../core/facade/game";
 import { AbstractService } from "../../../core/services/abstract-service";
+import { FileManager } from "../../../core/utils/file-manager";
 import { GameConfig } from "../../data/game-config";
 import { GameplayController } from "../gameplay/gameplay-controller";
 import { AgentController } from "./agent-controller";
@@ -11,6 +12,7 @@ export class LearningController extends AbstractService {
   protected agentController: AgentController = null;
   protected ticksTillAction: number = Infinity;
   protected learning: boolean = false;
+  protected fileManager: FileManager = null;
 
   constructor() {
     super(LearningController.key);
@@ -29,6 +31,7 @@ export class LearningController extends AbstractService {
 
   public init(): void {
     this.gameplayController = Game.getService(GameplayController.key);
+    this.fileManager = Game.getService(FileManager.key);
     this.initAgentController();
     this.listenEvents();
   }
@@ -41,6 +44,7 @@ export class LearningController extends AbstractService {
 
   protected listenEvents(): void {
     Game.events.on("fixedUpdate", this.fixedUpdate, this);
+    document.addEventListener("keydown", this.onKeyDown.bind(this));
   }
 
   protected fixedUpdate(): void {
@@ -61,5 +65,29 @@ export class LearningController extends AbstractService {
 
   protected act(): void {
     this.agentController.act();
+  }
+
+  protected onKeyDown(ev: KeyboardEvent): void {
+    const code = ev.code;
+
+    switch (code) {
+      case "KeyS":
+        this.save();
+        break;
+      case "KeyO":
+        this.open();
+        break;
+    }
+  }
+
+  protected save(): void {
+    const data = this.agentController.serializeAgent();
+    this.fileManager.export(data, "ec5.brain");
+  }
+
+  protected open(): void {
+    this.fileManager.import((data: string) => {
+      this.agentController.deserializeAgent(data);
+    });
   }
 }

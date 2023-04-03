@@ -27,6 +27,15 @@ export class AgentController {
     world.doAction(action);
   }
 
+  public serializeAgent(): string {
+    return JSON.stringify(this.agent.toJSON());
+  }
+
+  public deserializeAgent(data: string): void {
+    const json = JSON.parse(data);
+    this.agent.fromJSON(json);
+  }
+
   public init(): void {
     this.world = Game.getService(World.key);
     this.initAgent();
