@@ -18,6 +18,7 @@ export const GameConfig = {
   CatchDistance: 10,
   MoveAwaySpeedMin: 3,
   MoveAwaySpeedMax: 15,
+  UseLoadedBrain: true,
 };
 
 GameConfig.ViewScale = GameConfig.WorldViewSize / GameConfig.WorldSize;

@@ -1,3 +1,4 @@
+import { Assets } from "pixi.js";
 import { Game } from "../../../core/facade/game";
 import { AbstractService } from "../../../core/services/abstract-service";
 import { FileManager } from "../../../core/utils/file-manager";
@@ -33,6 +34,11 @@ export class LearningController extends AbstractService {
     this.gameplayController = Game.getService(GameplayController.key);
     this.fileManager = Game.getService(FileManager.key);
     this.initAgentController();
+
+    if (GameConfig.UseLoadedBrain) {
+      this.agentController.setFromBrainData(Assets.cache.get("ml:brain"));
+    }
+
     this.listenEvents();
   }
 

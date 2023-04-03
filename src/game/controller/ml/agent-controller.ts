@@ -36,6 +36,10 @@ export class AgentController {
     this.agent.fromJSON(json);
   }
 
+  public setFromBrainData(data: any): void {
+    this.agent.fromJSON(data);
+  }
+
   public init(): void {
     this.world = Game.getService(World.key);
     this.initAgent();
