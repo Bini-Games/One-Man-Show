@@ -1,6 +1,7 @@
 import { Assets } from "pixi.js";
 import { Game } from "../facade/game";
 import { LoadingState } from "./loading-state.enum";
+import { sound } from "@pixi/sound";
 
 export class Preloader {
   protected loadedCb: Function;
@@ -15,6 +16,7 @@ export class Preloader {
   public start(): this {
     if (this.state === LoadingState.Ready) {
       this.startPIXILoader();
+      this.loadSounds();
     }
 
     return this;
@@ -34,6 +36,13 @@ export class Preloader {
     Assets
       .loadBundle("assets")
       .then(() => this.onPIXIAssetsLoaded());
+  }
+
+  protected loadSounds(): void {
+    sound.add("bg", "assets/sounds/bg.wav");
+    sound.add("crack", "assets/sounds/crack.wav");
+    sound.add("magic", "assets/sounds/magic.flac");
+    sound.add("walk", "assets/sounds/walk.mp3");
   }
 
   protected onPIXIAssetsLoaded(): void {

@@ -1,3 +1,4 @@
+import { sound } from "@pixi/sound";
 import { Game } from "../../../core/facade/game";
 import { Math2 } from "../../../core/math/math2";
 import { Vector2 } from "../../../core/math/vector2";
@@ -42,6 +43,12 @@ export class Target extends MoveableEntity {
     events.emit("gameplay:target_condition_changed", this);
 
     if (broken !== prevBroken) {
+      if (broken) {
+        sound.play("crack");
+      } else {
+        sound.play("magic");
+      }
+
       events.emit("gameplay:target_broken_changed", this);
 
       if (broken) {

@@ -1,3 +1,4 @@
+import { sound } from "@pixi/sound";
 import { AbstractService } from "../../../core/services/abstract-service";
 import { Game } from "../../../core/facade/game";
 import { World } from "../../model/world";
@@ -58,6 +59,9 @@ export class GameplayController extends AbstractService {
   }
 
   public start(): void {
+    sound.play("bg", {
+      loop: true,
+    });
     this.learningController.start();
   }
 

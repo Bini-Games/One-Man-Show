@@ -1,7 +1,9 @@
+import { sound } from "@pixi/sound";
 import { Assets, Container, Graphics, Sprite } from "pixi.js";
 import { Child } from "../../model/entities/child";
 import { GameConfig } from "../../data/game-config";
 import { AbstractEntityView } from "./entity-view";
+import { Timer } from "eventemitter3-timer";
 
 export class ChildView extends AbstractEntityView<Child> {
   protected debugView: Graphics = null;
