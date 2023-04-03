@@ -132,7 +132,10 @@ function tick() {
   const dt = World.timeStep;
 
   while (accumulated >= dt) {
-    Game.events.emit("fixedUpdate");
+    for (let i = 0; i < GameConfig.StepsPerTick; ++i) {
+      Game.events.emit("fixedUpdate");
+    }
+
     accumulated -= dt;
   }
 
