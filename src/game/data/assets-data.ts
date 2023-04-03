@@ -16,5 +16,5 @@ export const AssetsData: Record<string, string> = {
   "result_screen:child_sad": "assets/img/ui/result/child_sad.png",
   "result_screen:child_happy": "assets/img/ui/result/child_happy.png",
   "result_screen:button_restart": "assets/img/ui/result/button_restart.png",
-  "ml:brain": "assets/json/brain_00.json",
+  "ml:brain": "assets/json/brain_01.json",
 };
