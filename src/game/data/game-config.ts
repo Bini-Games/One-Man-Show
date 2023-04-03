@@ -1,5 +1,5 @@
 export const GameConfig = {
-  DebugView: true,
+  DebugView: false,
   IsLearning: false,
   CanvasId: "game",
   LayoutLongSide: 960,
