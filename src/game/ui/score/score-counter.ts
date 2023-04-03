@@ -33,6 +33,6 @@ export class ScoreCounter extends Container {
 
   protected updateScore(): void {
     const score = this.scoreController.getScore();
-    this.text.text = `Score: ${~~score}`;
+    this.text.text = `SCORE: ${~~score}`;
   }
 }
