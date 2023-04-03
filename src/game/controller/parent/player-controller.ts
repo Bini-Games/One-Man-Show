@@ -23,6 +23,7 @@ export class PlayerController extends ParentController {
 
   protected listenEvents(): void {
     this.joystick.onChanged.connect(this.onJoystickChanged.bind(this));
+    Game.events.on("gameplay:end", this.onGameplayEnded, this);
     Game.events.on("update", this.update, this);
     Game.events.on("resize", this.onResize, this);
   }
@@ -32,6 +33,10 @@ export class PlayerController extends ParentController {
       this.parent.resetVelocity();
       this.isMoving = false;
     } else {
+      if (this.hasGameplayEnded()) {
+        return;
+      }
+
       const speed = GameConfig.ParentSpeed;
 
       const vx = x * speed;
@@ -58,5 +63,11 @@ export class PlayerController extends ParentController {
       1500 / layout.width,
     );
     this.camera.animateZoom(cameraZoom);
+  }
+
+  protected onGameplayEnded(): void {
+    this.joystick.release();
+    this.parent.resetVelocity();
+    this.isMoving = false;
   }
 }

@@ -3,10 +3,12 @@ import { AbstractService } from "../../../core/services/abstract-service";
 import { Child } from "../../model/entities/child";
 import { Parent } from "../../model/entities/parent";
 import { World } from "../../model/world";
+import { GameplayController } from "../gameplay/gameplay-controller";
 
 export class ParentController extends AbstractService {
   public static readonly key: string = "ParentController";
 
+  protected gameplayController: GameplayController;
   protected parent: Parent = null;
   protected child: Child = null;
 
@@ -15,8 +17,15 @@ export class ParentController extends AbstractService {
   }
 
   public init(): void {
+    const gameplayController = Game.getService<GameplayController>(GameplayController.key);
+    this.gameplayController = gameplayController;
+
     const world = Game.getService<World>(World.key);
     this.parent = world.getParent();
     this.child = world.getChild();
+  }
+
+  protected hasGameplayEnded(): boolean {
+    return this.gameplayController.hasEnded();
   }
 }

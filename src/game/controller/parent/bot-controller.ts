@@ -24,6 +24,10 @@ export class BotController extends ParentController {
   }
 
   protected fixedUpdate(): void {
+    if (this.hasGameplayEnded()) {
+      return;
+    }
+
     const parent = this.parent;
     const velocity = this.child
       .getPosition()
