@@ -20,6 +20,7 @@ import { BotController } from "./game/controller/parent/bot-controller";
 import { ParentController } from "./game/controller/parent/parent-controller";
 import { ScoreController } from "./game/controller/gameplay/score-controller";
 import { GameplayController } from "./game/controller/gameplay/gameplay-controller";
+import { TimerController } from "./game/controller/gameplay/timer-controller";
 
 const canvas = document.createElement("canvas");
 canvas.id = GameConfig.CanvasId;
@@ -55,6 +56,9 @@ Game.registerService(ParentController.key, parentController);
 
 const scoreController = new ScoreController();
 Game.registerService(ScoreController.key, scoreController);
+
+const timerController = new TimerController();
+Game.registerService(TimerController.key, timerController);
 
 const gameplayController = new GameplayController();
 Game.registerService(GameplayController.key, gameplayController);
@@ -106,7 +110,6 @@ function create() {
   Game.events.once("pointerdown", () => requestFullscreen());
 
   parentController.init();
-  scoreController.init();
   gameplayController.init();
 
   layout.updateSize();

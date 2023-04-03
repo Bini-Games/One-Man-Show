@@ -6,11 +6,13 @@ import { GameConfig } from "../data/game-config";
 import { ScoreCounter } from "./score/score-counter";
 import { ResultScreen, ResultScreenType } from "./result-screen/result-screen";
 import { EndReason } from "../controller/gameplay/gameplay-controller";
+import { TimerCounter } from "./timer/timer-counter";
 
 export class UI extends Container {
   protected overlay: Sprite = null;
   protected joystick: Joystick = null;
   protected scoreCounter: ScoreCounter = null;
+  protected timerCounter: TimerCounter = null;
   protected resultScreen: ResultScreen = null;
   protected isJoystickDown: boolean = false;
 
@@ -22,6 +24,7 @@ export class UI extends Container {
     this.initOverlay();
     this.initJoystick();
     this.initScoreCounter();
+    this.initTimerCounter();
     this.initResultScreen();
     this.listenEvents();
 
@@ -47,6 +50,13 @@ export class UI extends Container {
     this.scoreCounter = scoreCounter;
     this.addChild(scoreCounter);
     scoreCounter.init();
+  }
+
+  protected initTimerCounter(): void {
+    const timerCounter = new TimerCounter();
+    this.timerCounter = timerCounter;
+    this.addChild(timerCounter);
+    timerCounter.init();
   }
 
   protected initResultScreen(): void {
@@ -123,5 +133,7 @@ export class UI extends Container {
       layout.width * 0.95 - joystickSize,
       layout.height * 0.95 - joystickSize
     );
+
+    this.timerCounter.position.x = layout.width;
   }
 }

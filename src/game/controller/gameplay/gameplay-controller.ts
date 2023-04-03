@@ -4,6 +4,7 @@ import { World } from "../../model/world";
 import { GameConfig } from "../../data/game-config";
 import { ScoreController } from "./score-controller";
 import { LearningController } from "../ml/learning-controller";
+import { TimerController } from "./timer-controller";
 
 export enum EndReason {
   AllTargetsBroken = "AllTargetsBroken",
@@ -15,6 +16,7 @@ export class GameplayController extends AbstractService {
 
   protected world: World = null;
   protected scoreController: ScoreController = null;
+  protected timerController: TimerController = null;
   protected learningController: LearningController = null;
   protected ended: boolean = false;
   protected endReason: EndReason = null;
@@ -34,10 +36,13 @@ export class GameplayController extends AbstractService {
   public init(): void {
     this.world = Game.getService<World>(World.key);
     this.scoreController = Game.getService<ScoreController>(ScoreController.key);
+    this.timerController = Game.getService<TimerController>(TimerController.key);
     this.learningController = Game.getService<LearningController>(LearningController.key);
 
     this.listenEvents();
 
+    this.scoreController.init();
+    this.timerController.init();
     this.learningController.init();
   }
 
@@ -47,6 +52,7 @@ export class GameplayController extends AbstractService {
 
   protected listenEvents(): void {
     Game.events.on("gameplay:target_changed", this.onTargetChanged, this);
+    Game.events.on("gameplay:timer_ended", this.onTimerEnded, this);
   }
 
   protected onTargetChanged(): void {
@@ -57,12 +63,17 @@ export class GameplayController extends AbstractService {
     }
   }
 
+  protected onTimerEnded(): void {
+    this.endGameplay(EndReason.TimedOut);
+  }
+
   protected handleNoTarget(): void {
     if (GameConfig.IsLearning) {
       const world = this.world;
       world.resetTargets();
       world.pickNextTarget();
       this.scoreController.reset();
+      this.timerController.reset();
     } else {
       this.endGameplay(EndReason.AllTargetsBroken);
     }

@@ -12,6 +12,7 @@ export const GameConfig = {
   ParentSpeed: 1,
   TicksPerAction: 10,
   NormalCondition: 100,
+  RoundTime: 60.1,
 };
 
 GameConfig.ViewScale = GameConfig.WorldViewSize / GameConfig.WorldSize;
