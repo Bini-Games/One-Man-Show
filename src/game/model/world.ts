@@ -244,6 +244,7 @@ export class World extends AbstractService {
   protected listenEvents(): void {
     Game.events.on("fixedUpdate", this.fixedUpdate, this);
     Game.events.on("gameplay:target_broken", this.onTargetBroken, this);
+    Game.events.on("gameplay:catch", this.onCatch, this);
   }
 
   protected fixedUpdate() {
@@ -274,5 +275,10 @@ export class World extends AbstractService {
     }
 
     this.pickNextTarget();
+  }
+
+  protected onCatch(): void {
+    this.child.resetVelocity();
+    this.parent.resetVelocity();
   }
 }

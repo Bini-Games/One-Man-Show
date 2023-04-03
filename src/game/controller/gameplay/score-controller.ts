@@ -27,8 +27,8 @@ export class ScoreController extends AbstractService {
   }
 
   public init(): void {
-    this.world = Game.getService<World>(World.key);
-    this.gameplayController = Game.getService<GameplayController>(GameplayController.key);
+    this.world = Game.getService(World.key);
+    this.gameplayController = Game.getService(GameplayController.key);
     this.listenEvents();
     this.reset();
   }

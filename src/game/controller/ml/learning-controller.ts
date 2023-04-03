@@ -1,11 +1,13 @@
 import { Game } from "../../../core/facade/game";
 import { AbstractService } from "../../../core/services/abstract-service";
 import { GameConfig } from "../../data/game-config";
+import { GameplayController } from "../gameplay/gameplay-controller";
 import { AgentController } from "./agent-controller";
 
 export class LearningController extends AbstractService {
   public static readonly key: string = "LearningController";
 
+  protected gameplayController: GameplayController = null;
   protected agentController: AgentController = null;
   protected ticksTillAction: number = Infinity;
   protected learning: boolean = false;
@@ -26,6 +28,7 @@ export class LearningController extends AbstractService {
   }
 
   public init(): void {
+    this.gameplayController = Game.getService(GameplayController.key);
     this.initAgentController();
     this.listenEvents();
   }
@@ -41,6 +44,10 @@ export class LearningController extends AbstractService {
   }
 
   protected fixedUpdate(): void {
+    if (!this.gameplayController.canAct()) {
+      return;
+    }
+
     if (--this.ticksTillAction === 0) {
       this.ticksTillAction = GameConfig.TicksPerAction;
       this.learn();

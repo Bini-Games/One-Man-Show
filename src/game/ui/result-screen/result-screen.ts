@@ -202,7 +202,7 @@ export class ResultScreen extends Container {
   protected onRestartButtonUp(): void {
     this.onResize(); // reset scales
 
-    new Timer(0.2)
+    new Timer(200)
       .start()
       .on('end', () => {
         window.location.reload(); // restart game by reloading window - bad idea, but it's fast :)

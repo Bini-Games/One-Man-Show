@@ -16,7 +16,7 @@ export class PlayerController extends ParentController {
     super.init();
 
     this.joystick = Game.getService<UIService>(UIService.key).ui.getJoystick();
-    this.camera = Game.getService<Camera>(Camera.key);
+    this.camera = Game.getService(Camera.key);
 
     this.listenEvents();
   }
@@ -33,7 +33,7 @@ export class PlayerController extends ParentController {
       this.parent.resetVelocity();
       this.isMoving = false;
     } else {
-      if (this.hasGameplayEnded()) {
+      if (!this.cantAct()) {
         return;
       }
 

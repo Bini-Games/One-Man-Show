@@ -17,15 +17,14 @@ export class ParentController extends AbstractService {
   }
 
   public init(): void {
-    const gameplayController = Game.getService<GameplayController>(GameplayController.key);
-    this.gameplayController = gameplayController;
+    this.gameplayController = Game.getService(GameplayController.key);
 
     const world = Game.getService<World>(World.key);
     this.parent = world.getParent();
     this.child = world.getChild();
   }
 
-  protected hasGameplayEnded(): boolean {
-    return this.gameplayController.hasEnded();
+  protected cantAct(): boolean {
+    return this.gameplayController.canAct();
   }
 }

@@ -7,7 +7,7 @@ export class TimerCounter extends Container {
   protected timerController: TimerController = null;
 
   public init(): void {
-    this.timerController = Game.getService<TimerController>(TimerController.key);
+    this.timerController = Game.getService(TimerController.key);
     this.initText();
     this.listenEvents();
     this.updateTime();

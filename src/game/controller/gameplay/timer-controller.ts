@@ -23,7 +23,7 @@ export class TimerController extends AbstractService {
   }
 
   public init(): void {
-    this.gameplayController = Game.getService<GameplayController>(GameplayController.key);
+    this.gameplayController = Game.getService(GameplayController.key);
     this.listenEvents();
     this.reset();
   }

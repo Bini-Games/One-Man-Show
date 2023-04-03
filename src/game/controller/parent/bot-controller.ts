@@ -13,7 +13,7 @@ export class BotController extends ParentController {
   public init(): void {
     super.init();
 
-    this.camera = Game.getService<Camera>(Camera.key);
+    this.camera = Game.getService(Camera.key);
 
     this.listenEvents();
   }
@@ -24,7 +24,7 @@ export class BotController extends ParentController {
   }
 
   protected fixedUpdate(): void {
-    if (this.hasGameplayEnded()) {
+    if (!this.cantAct()) {
       return;
     }
 

@@ -6,6 +6,7 @@ import { ScoreController } from "./score-controller";
 import { LearningController } from "../ml/learning-controller";
 import { TimerController } from "./timer-controller";
 import { Timer } from "eventemitter3-timer";
+import { Math2 } from "../../../core/math/math2";
 
 export enum EndReason {
   AllTargetsBroken = "AllTargetsBroken",
@@ -22,9 +23,18 @@ export class GameplayController extends AbstractService {
   protected ended: boolean = false;
   protected endReason: EndReason = null;
   protected catchActive: boolean = false;
+  protected moveAwaySpeed: number = 7;
 
   constructor() {
     super(GameplayController.key);
+  }
+
+  public canAct(): boolean {
+    return !this.catchActive && !this.ended;
+  }
+
+  public isCatchActive(): boolean {
+    return this.catchActive;
   }
 
   public hasEnded(): boolean {
@@ -36,10 +46,10 @@ export class GameplayController extends AbstractService {
   }
 
   public init(): void {
-    this.world = Game.getService<World>(World.key);
-    this.scoreController = Game.getService<ScoreController>(ScoreController.key);
-    this.timerController = Game.getService<TimerController>(TimerController.key);
-    this.learningController = Game.getService<LearningController>(LearningController.key);
+    this.world = Game.getService(World.key);
+    this.scoreController = Game.getService(ScoreController.key);
+    this.timerController = Game.getService(TimerController.key);
+    this.learningController = Game.getService(LearningController.key);
 
     this.listenEvents();
 
@@ -75,14 +85,47 @@ export class GameplayController extends AbstractService {
   }
 
   protected onCatchAvailable(): void {
+    if (this.catchActive) {
+      return;
+    }
+
     this.catchActive = true;
     Game.events.emit('gameplay:catch');
-    new Timer(0.25)
+
+    new Timer(250)
       .start()
       .on("end", this.moveCatcherAway, this);
+
+    new Timer(500)
+      .start()
+      .on("end", this.stopCatch, this);
   }
 
   protected moveCatcherAway(): void {
+    const world = this.world;
+    const parent = world.getParent();
+    const velocityAway = parent
+      .getPosition()
+      .clone()
+      .sub(
+        world
+          .getChild()
+          .getPosition()
+      )
+      .setLength(this.moveAwaySpeed);
+    parent.setVelocity(velocityAway.x, velocityAway.y);
+    this.moveAwaySpeed = Math2.lerp(3, this.moveAwaySpeed, 0.9);
+  }
+
+  protected stopCatch(): void {
+    if (!this.catchActive) {
+      return;
+    }
+
+    const world = this.world;
+    const parent = world.getParent();
+    parent.resetVelocity();
+    this.catchActive = false;
   }
 
   protected handleNoTarget(): void {

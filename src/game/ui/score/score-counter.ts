@@ -7,7 +7,7 @@ export class ScoreCounter extends Container {
   protected scoreController: ScoreController = null;
 
   public init(): void {
-    this.scoreController = Game.getService<ScoreController>(ScoreController.key);
+    this.scoreController = Game.getService(ScoreController.key);
     this.initText();
     this.listenEvents();
     this.updateScore();
