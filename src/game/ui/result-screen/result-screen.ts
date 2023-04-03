@@ -106,9 +106,9 @@ export class ResultScreen extends Container {
 
   protected listenEvents(): void {
     Game.events.on("resize", this.onResize, this);
-    this.restartButton.on('pointerdown', this.onRestartButtonDown, this);
-    this.restartButton.on('pointerup', this.onRestartButtonUp, this);
-    this.restartButton.on('pointerupoutside', this.onRestartButtonUp, this);
+    this.restartButton.on("pointerdown", this.onRestartButtonDown, this);
+    this.restartButton.on("pointerup", this.onRestartButtonUp, this);
+    this.restartButton.on("pointerupoutside", this.onRestartButtonUp, this);
   }
 
   protected onResize(): void {
@@ -204,7 +204,7 @@ export class ResultScreen extends Container {
 
     new Timer(200)
       .start()
-      .on('end', () => {
+      .on("end", () => {
         window.location.reload(); // restart game by reloading window - bad idea, but it's fast :)
       });
   }

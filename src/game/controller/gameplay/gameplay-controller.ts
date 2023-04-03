@@ -89,7 +89,7 @@ export class GameplayController extends AbstractService {
     }
 
     this.catchActive = true;
-    Game.events.emit('gameplay:catch');
+    Game.events.emit("gameplay:catch");
 
     this.delay(250, this.moveCatcherAway, this);
     this.delay(500, this.stopCatch, this);

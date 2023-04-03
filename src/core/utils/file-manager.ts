@@ -1,4 +1,4 @@
-import { saveAs } from 'file-saver';
+import { saveAs } from "file-saver";
 
 export class FileManager {
   private input: any = null;
@@ -23,13 +23,13 @@ export class FileManager {
       this.callback(readerEvent.target.result);
     };
 
-    const input = document.createElement('input');
+    const input = document.createElement("input");
     this.input = input;
-    input.type = 'file';
+    input.type = "file";
     input.onchange = () => {
       const file = input.files[0];
       reader.readAsText(file);
-      input.value = '';
+      input.value = "";
     };
   }
 }

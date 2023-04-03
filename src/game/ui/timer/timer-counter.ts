@@ -35,6 +35,6 @@ export class TimerCounter extends Container {
   protected updateTime(): void {
     const time = Math.ceil(this.timerController.getTimeLeft());
     const timeString = time.toString();
-    this.text.text = `TIME: ${timeString.length === 1 ? '0' + timeString : timeString}S.`;
+    this.text.text = `TIME: ${timeString.length === 1 ? "0" + timeString : timeString}S.`;
   }
 }
