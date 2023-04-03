@@ -23,7 +23,7 @@ export class GameplayController extends AbstractService {
   protected ended: boolean = false;
   protected endReason: EndReason = null;
   protected catchActive: boolean = false;
-  protected moveAwaySpeed: number = 7;
+  protected moveAwaySpeed: number = GameConfig.MoveAwaySpeedMax;
 
   constructor() {
     super(GameplayController.key);
@@ -113,8 +113,10 @@ export class GameplayController extends AbstractService {
           .getPosition()
       )
       .setLength(this.moveAwaySpeed);
+      console.log(this.moveAwaySpeed);
+      
     parent.setVelocity(velocityAway.x, velocityAway.y);
-    this.moveAwaySpeed = Math2.lerp(3, this.moveAwaySpeed, 0.9);
+    this.moveAwaySpeed = Math2.lerp(GameConfig.MoveAwaySpeedMin, this.moveAwaySpeed, 0.9);
   }
 
   protected stopCatch(): void {
@@ -142,6 +144,7 @@ export class GameplayController extends AbstractService {
     world.pickNextTarget();
     this.scoreController.reset();
     this.timerController.reset();
+    this.moveAwaySpeed = GameConfig.MoveAwaySpeedMax;
   }
 
   protected endGameplay(reason: EndReason): void {
