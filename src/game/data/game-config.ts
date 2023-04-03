@@ -9,7 +9,7 @@ export const GameConfig = {
   WorldViewSize: 700,
   ViewScale: -1, // will be calculated below
   ChildSpeed: 4,
-  ParentSpeed: 1,
+  ParentSpeed: 2,
   TicksPerAction: 5,
   StepsPerTick: 1,
   LearningSpeed: 3, // 0-9
